@@ -1,0 +1,17 @@
+	component system is
+		port (
+			btinc_export  : in  std_logic                    := 'X'; -- export
+			btmode_export : in  std_logic                    := 'X'; -- export
+			btsel_export  : in  std_logic                    := 'X'; -- export
+			clk_clk       : in  std_logic                    := 'X'; -- clk
+			leds_export   : out std_logic_vector(7 downto 0);        -- export
+			reset_reset_n : in  std_logic                    := 'X'; -- reset_n
+			seg7h0_export : out std_logic_vector(6 downto 0);        -- export
+			seg7h1_export : out std_logic_vector(6 downto 0);        -- export
+			seg7m0_export : out std_logic_vector(6 downto 0);        -- export
+			seg7m1_export : out std_logic_vector(6 downto 0);        -- export
+			seg7s0_export : out std_logic_vector(6 downto 0);        -- export
+			seg7s1_export : out std_logic_vector(6 downto 0)         -- export
+		);
+	end component system;
+

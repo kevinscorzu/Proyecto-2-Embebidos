@@ -1,0 +1,6 @@
+19:05:55 **** Incremental Build of configuration Nios II for project alarm_bsp ****
+wsl make all 
+[BSP build complete]
+
+19:05:57 Build Finished (took 2s.761ms)
+

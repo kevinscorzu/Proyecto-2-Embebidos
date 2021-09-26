@@ -1,0 +1,170 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 2020  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and any partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details, at
+https://fpgasoftware.intel.com/eula.
+*/
+(header "symbol" (version "1.1"))
+(symbol
+	(rect 0 0 288 544)
+	(text "system" (rect 123 -1 153 11)(font "Arial" (font_size 10)))
+	(text "inst" (rect 8 528 20 540)(font "Arial" ))
+	(port
+		(pt 0 72)
+		(input)
+		(text "btinc_export" (rect 0 0 48 12)(font "Arial" (font_size 8)))
+		(text "btinc_export" (rect 4 61 76 72)(font "Arial" (font_size 8)))
+		(line (pt 0 72)(pt 112 72)(line_width 1))
+	)
+	(port
+		(pt 0 112)
+		(input)
+		(text "btmode_export" (rect 0 0 60 12)(font "Arial" (font_size 8)))
+		(text "btmode_export" (rect 4 101 82 112)(font "Arial" (font_size 8)))
+		(line (pt 0 112)(pt 112 112)(line_width 1))
+	)
+	(port
+		(pt 0 152)
+		(input)
+		(text "btsel_export" (rect 0 0 48 12)(font "Arial" (font_size 8)))
+		(text "btsel_export" (rect 4 141 76 152)(font "Arial" (font_size 8)))
+		(line (pt 0 152)(pt 112 152)(line_width 1))
+	)
+	(port
+		(pt 0 192)
+		(input)
+		(text "clk_clk" (rect 0 0 27 12)(font "Arial" (font_size 8)))
+		(text "clk_clk" (rect 4 181 46 192)(font "Arial" (font_size 8)))
+		(line (pt 0 192)(pt 112 192)(line_width 1))
+	)
+	(port
+		(pt 0 272)
+		(input)
+		(text "reset_reset_n" (rect 0 0 56 12)(font "Arial" (font_size 8)))
+		(text "reset_reset_n" (rect 4 261 82 272)(font "Arial" (font_size 8)))
+		(line (pt 0 272)(pt 112 272)(line_width 1))
+	)
+	(port
+		(pt 0 232)
+		(output)
+		(text "leds_export[7..0]" (rect 0 0 66 12)(font "Arial" (font_size 8)))
+		(text "leds_export[7..0]" (rect 4 221 106 232)(font "Arial" (font_size 8)))
+		(line (pt 0 232)(pt 112 232)(line_width 3))
+	)
+	(port
+		(pt 0 312)
+		(output)
+		(text "seg7h0_export[6..0]" (rect 0 0 79 12)(font "Arial" (font_size 8)))
+		(text "seg7h0_export[6..0]" (rect 4 301 118 312)(font "Arial" (font_size 8)))
+		(line (pt 0 312)(pt 112 312)(line_width 3))
+	)
+	(port
+		(pt 0 352)
+		(output)
+		(text "seg7h1_export[6..0]" (rect 0 0 77 12)(font "Arial" (font_size 8)))
+		(text "seg7h1_export[6..0]" (rect 4 341 118 352)(font "Arial" (font_size 8)))
+		(line (pt 0 352)(pt 112 352)(line_width 3))
+	)
+	(port
+		(pt 0 392)
+		(output)
+		(text "seg7m0_export[6..0]" (rect 0 0 82 12)(font "Arial" (font_size 8)))
+		(text "seg7m0_export[6..0]" (rect 4 381 118 392)(font "Arial" (font_size 8)))
+		(line (pt 0 392)(pt 112 392)(line_width 3))
+	)
+	(port
+		(pt 0 432)
+		(output)
+		(text "seg7m1_export[6..0]" (rect 0 0 81 12)(font "Arial" (font_size 8)))
+		(text "seg7m1_export[6..0]" (rect 4 421 118 432)(font "Arial" (font_size 8)))
+		(line (pt 0 432)(pt 112 432)(line_width 3))
+	)
+	(port
+		(pt 0 472)
+		(output)
+		(text "seg7s0_export[6..0]" (rect 0 0 79 12)(font "Arial" (font_size 8)))
+		(text "seg7s0_export[6..0]" (rect 4 461 118 472)(font "Arial" (font_size 8)))
+		(line (pt 0 472)(pt 112 472)(line_width 3))
+	)
+	(port
+		(pt 0 512)
+		(output)
+		(text "seg7s1_export[6..0]" (rect 0 0 77 12)(font "Arial" (font_size 8)))
+		(text "seg7s1_export[6..0]" (rect 4 501 118 512)(font "Arial" (font_size 8)))
+		(line (pt 0 512)(pt 112 512)(line_width 3))
+	)
+	(drawing
+		(text "btinc" (rect 86 43 202 99)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "export" (rect 117 67 270 144)(font "Arial" (color 0 0 0)))
+		(text "btmode" (rect 70 83 176 179)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "export" (rect 117 107 270 224)(font "Arial" (color 0 0 0)))
+		(text "btsel" (rect 85 123 200 259)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "export" (rect 117 147 270 304)(font "Arial" (color 0 0 0)))
+		(text "clk" (rect 97 163 212 339)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "clk" (rect 117 187 252 384)(font "Arial" (color 0 0 0)))
+		(text "leds" (rect 89 203 202 419)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "export" (rect 117 227 270 464)(font "Arial" (color 0 0 0)))
+		(text "reset" (rect 83 243 196 499)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "reset_n" (rect 117 267 276 544)(font "Arial" (color 0 0 0)))
+		(text "seg7h0" (rect 71 283 178 579)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "export" (rect 117 307 270 624)(font "Arial" (color 0 0 0)))
+		(text "seg7h1" (rect 73 323 182 659)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "export" (rect 117 347 270 704)(font "Arial" (color 0 0 0)))
+		(text "seg7m0" (rect 67 363 170 739)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "export" (rect 117 387 270 784)(font "Arial" (color 0 0 0)))
+		(text "seg7m1" (rect 69 403 174 819)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "export" (rect 117 427 270 864)(font "Arial" (color 0 0 0)))
+		(text "seg7s0" (rect 71 443 178 899)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "export" (rect 117 467 270 944)(font "Arial" (color 0 0 0)))
+		(text "seg7s1" (rect 73 483 182 979)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "export" (rect 117 507 270 1024)(font "Arial" (color 0 0 0)))
+		(text " system " (rect 253 528 554 1066)(font "Arial" ))
+		(line (pt 112 32)(pt 176 32)(line_width 1))
+		(line (pt 176 32)(pt 176 528)(line_width 1))
+		(line (pt 112 528)(pt 176 528)(line_width 1))
+		(line (pt 112 32)(pt 112 528)(line_width 1))
+		(line (pt 113 52)(pt 113 76)(line_width 1))
+		(line (pt 114 52)(pt 114 76)(line_width 1))
+		(line (pt 113 92)(pt 113 116)(line_width 1))
+		(line (pt 114 92)(pt 114 116)(line_width 1))
+		(line (pt 113 132)(pt 113 156)(line_width 1))
+		(line (pt 114 132)(pt 114 156)(line_width 1))
+		(line (pt 113 172)(pt 113 196)(line_width 1))
+		(line (pt 114 172)(pt 114 196)(line_width 1))
+		(line (pt 113 212)(pt 113 236)(line_width 1))
+		(line (pt 114 212)(pt 114 236)(line_width 1))
+		(line (pt 113 252)(pt 113 276)(line_width 1))
+		(line (pt 114 252)(pt 114 276)(line_width 1))
+		(line (pt 113 292)(pt 113 316)(line_width 1))
+		(line (pt 114 292)(pt 114 316)(line_width 1))
+		(line (pt 113 332)(pt 113 356)(line_width 1))
+		(line (pt 114 332)(pt 114 356)(line_width 1))
+		(line (pt 113 372)(pt 113 396)(line_width 1))
+		(line (pt 114 372)(pt 114 396)(line_width 1))
+		(line (pt 113 412)(pt 113 436)(line_width 1))
+		(line (pt 114 412)(pt 114 436)(line_width 1))
+		(line (pt 113 452)(pt 113 476)(line_width 1))
+		(line (pt 114 452)(pt 114 476)(line_width 1))
+		(line (pt 113 492)(pt 113 516)(line_width 1))
+		(line (pt 114 492)(pt 114 516)(line_width 1))
+		(line (pt 0 0)(pt 288 0)(line_width 1))
+		(line (pt 288 0)(pt 288 544)(line_width 1))
+		(line (pt 0 544)(pt 288 544)(line_width 1))
+		(line (pt 0 0)(pt 0 544)(line_width 1))
+	)
+)
