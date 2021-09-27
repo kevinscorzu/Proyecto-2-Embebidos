@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Sep 25, 2021 7:05:26 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1632618326547</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>Sep 27, 2021 4:57:09 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1632783429223</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>C:\Users\leahy\Documents\TEC\II-SEM-2021\SistemasEmbebidos\Proyecto-2-Embebidos\cpu\software\alarm_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>C:\Users\leahy\Documents\TEC\II-SEM-2021\SistemasEmbebidos\Proyecto-2-Embebidos\cpu\system.sopcinfo</SopcDesignFile>
@@ -900,15 +900,9 @@
         </Setting>
         <MemoryMap>
                 <slaveDescriptor>RAM</slaveDescriptor>
-                <addressRange>0x00001000 - 0x00001FFF</addressRange>
-                <addressSpan>4096</addressSpan>
+                <addressRange>0x00002000 - 0x000033FF</addressRange>
+                <addressSpan>5120</addressSpan>
                 <attributes>memory</attributes>
-        </MemoryMap>
-        <MemoryMap>
-                <slaveDescriptor>UART</slaveDescriptor>
-                <addressRange>0x00003000 - 0x00003007</addressRange>
-                <addressSpan>8</addressSpan>
-                <attributes>printable</attributes>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>TIMER</slaveDescriptor>
@@ -975,6 +969,12 @@
                 <addressRange>0x00005090 - 0x0000509F</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>UART</slaveDescriptor>
+                <addressRange>0x000050C8 - 0x000050CF</addressRange>
+                <addressSpan>8</addressSpan>
+                <attributes>printable</attributes>
         </MemoryMap>
         <LinkerSection>
                 <sectionName>.text</sectionName>

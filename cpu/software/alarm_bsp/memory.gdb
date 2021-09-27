@@ -3,7 +3,7 @@
 # Machine generated for CPU 'CPU' in SOPC Builder design 'system'
 # SOPC Builder design path: C:/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu/system.sopcinfo
 #
-# Generated: Tue Sep 21 16:13:55 CST 2021
+# Generated: Mon Sep 27 16:49:03 CST 2021
 
 # DO NOT MODIFY THIS FILE
 #
@@ -47,4 +47,4 @@
 # by allowing GDB to cache memory contents on the host.
 
 # RAM
-memory 0x1000 0x2000 cache
+memory 0x2000 0x3400 cache

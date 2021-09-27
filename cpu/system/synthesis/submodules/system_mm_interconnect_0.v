@@ -17,7 +17,7 @@ module system_mm_interconnect_0 (
 		input  wire        CPU_data_master_write,                 //                                .write
 		input  wire [31:0] CPU_data_master_writedata,             //                                .writedata
 		input  wire        CPU_data_master_debugaccess,           //                                .debugaccess
-		input  wire [13:0] CPU_instruction_master_address,        //          CPU_instruction_master.address
+		input  wire [14:0] CPU_instruction_master_address,        //          CPU_instruction_master.address
 		output wire        CPU_instruction_master_waitrequest,    //                                .waitrequest
 		input  wire        CPU_instruction_master_read,           //                                .read
 		output wire [31:0] CPU_instruction_master_readdata,       //                                .readdata
@@ -49,7 +49,7 @@ module system_mm_interconnect_0 (
 		input  wire [31:0] LEDS_s1_readdata,                      //                                .readdata
 		output wire [31:0] LEDS_s1_writedata,                     //                                .writedata
 		output wire        LEDS_s1_chipselect,                    //                                .chipselect
-		output wire [9:0]  RAM_s1_address,                        //                          RAM_s1.address
+		output wire [10:0] RAM_s1_address,                        //                          RAM_s1.address
 		output wire        RAM_s1_write,                          //                                .write
 		input  wire [31:0] RAM_s1_readdata,                       //                                .readdata
 		output wire [31:0] RAM_s1_writedata,                      //                                .writedata
@@ -1052,7 +1052,7 @@ module system_mm_interconnect_0 (
 	);
 
 	altera_merlin_master_translator #(
-		.AV_ADDRESS_W                (14),
+		.AV_ADDRESS_W                (15),
 		.AV_DATA_W                   (32),
 		.AV_BURSTCOUNT_W             (1),
 		.AV_BYTEENABLE_W             (4),
@@ -1240,7 +1240,7 @@ module system_mm_interconnect_0 (
 	);
 
 	altera_merlin_slave_translator #(
-		.AV_ADDRESS_W                   (10),
+		.AV_ADDRESS_W                   (11),
 		.AV_DATA_W                      (32),
 		.UAV_DATA_W                     (32),
 		.AV_BURSTCOUNT_W                (1),

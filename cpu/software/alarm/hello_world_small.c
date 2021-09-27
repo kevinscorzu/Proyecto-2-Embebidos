@@ -102,12 +102,16 @@ volatile int btModeEdgeCapture;
 volatile int btIncEdgeCapture;
 volatile int btSelEdgeCapture;
 
-volatile unsigned char* ramPtr = (unsigned char *) 0x1000;
+volatile unsigned char* ramPtr = (unsigned char *) 0x2000;
 volatile unsigned char* modePtr;
 volatile unsigned char* segPtr;
 volatile unsigned char* minPtr;
 volatile unsigned char* hourPtr;
 volatile unsigned char* configPtr;
+volatile unsigned char* alarmSegPtr;
+volatile unsigned char* alarmMinPtr;
+volatile unsigned char* alarmHourPtr;
+volatile unsigned char* blinkPtr;
 
 volatile unsigned char* segS0Ptr = (unsigned char *) 0x5000;
 volatile unsigned char* segS1Ptr = (unsigned char *) 0x5010;
@@ -120,12 +124,14 @@ volatile unsigned char* ledsPtr = (unsigned char *) 0x5090;
 
 void initializeInterrupts();
 void handleTimer();
+void handleAlarm();
 void changeMode();
-void changeTimeMode();
+void configureTimeMode();
 void countTime();
 void changeTime();
 
-void showNumbers();
+void showTimeNumbers();
+void showAlarmNumbers();
 void numberToSeg7(int num,volatile  unsigned char* seg7);
 
 int main() { 
@@ -135,6 +141,10 @@ int main() {
   minPtr = ramPtr + 3;
   hourPtr = ramPtr + 4;
   configPtr = ramPtr + 5;
+  alarmSegPtr  = ramPtr + 6;
+  alarmMinPtr = ramPtr + 7;
+  alarmHourPtr = ramPtr + 8;
+  blinkPtr = ramPtr + 9;
 
   *segS0Ptr = 0;
   *segS1Ptr = 0;
@@ -150,9 +160,15 @@ int main() {
   *hourPtr = 0;
 
   *configPtr = 0;
+  
+  *alarmSegPtr = 0;
+  *alarmMinPtr = 0;
+  *alarmHourPtr = 12;
+
+  *blinkPtr = 0;
 
   *ledsPtr = 0b00000001;
-  
+
   initializeInterrupts();
 
   while (1);
@@ -192,7 +208,7 @@ void initializeInterrupts() {
                       btIncEdgeCapturePtr, 0x0);  
   
   alt_ic_isr_register(BTSELIRQID,
-                      BTSELIRQ, changeTimeMode,
+                      BTSELIRQ, configureTimeMode,
                       btSelEdgeCapturePtr, 0x0);  
 
   return;
@@ -205,14 +221,35 @@ void handleTimer() {
 
   if (*modePtr == 0) {
     countTime(); 
-    showNumbers();
-    //Verificar alarma
+    showTimeNumbers();
+    handleAlarm();
+  }
+
+  if (*modePtr == 2) {
+    countTime();
   }
 
   return;
 
 }
 
+void handleAlarm() {
+
+  if (*segPtr == *alarmSegPtr && *minPtr == *alarmMinPtr && *hourPtr == *alarmHourPtr) {
+    *blinkPtr = 10;
+    *ledsPtr = 0b11111111;
+  }
+  else if (*blinkPtr != 0) {
+    *ledsPtr = ~*ledsPtr;
+    *blinkPtr -= 1;
+  }
+  else if (*blinkPtr <= 0) {
+    *ledsPtr = 0b00000001;
+  }
+
+  return;
+
+}
 
 void changeMode() {
 
@@ -223,37 +260,55 @@ void changeMode() {
 
   switch (*modePtr) {      
     case 1: 
-      *ledsPtr = 0b00000010;
+      *ledsPtr = 0b00100010;
 
       break;
 
     case 2:
-      *ledsPtr = 0b00000100;
+      *ledsPtr = 0b00100100;
+      showAlarmNumbers();
 
       break;
 
     case 3:
       *ledsPtr = 0b00000001;
       *modePtr = 0;
+      showTimeNumbers();
 
       break;
-
   }
 
   return;
 
 }
 
-void changeTimeMode() {
+void configureTimeMode() {
 
   IOWR_ALTERA_AVALON_PIO_EDGE_CAP(BTSEL, 0);
 	IOWR_ALTERA_AVALON_PIO_IRQ_MASK(BTSEL, 0xf);
 
-  if (*modePtr == 1) {
+  if (*modePtr == 1 || *modePtr == 2) {
     *configPtr += 1;
 
-    if (*configPtr == 3) {
+    switch (*configPtr) {      
+      case 1: 
+        *ledsPtr = 0b00000110 & *ledsPtr;
+        *ledsPtr = 0b01000000 | *ledsPtr;
+
+        break;
+
+      case 2:
+        *ledsPtr = 0b00000110 & *ledsPtr;
+        *ledsPtr = 0b10000000 | *ledsPtr;
+
+        break;
+
+      case 3:
+        *ledsPtr = 0b00000110 & *ledsPtr;
+        *ledsPtr = 0b00100000 | *ledsPtr;
         *configPtr = 0;
+
+        break;
     }
   }
 
@@ -294,10 +349,42 @@ void changeTime() {
             *hourPtr += 1;
         }
         break;
-
     }
 
-    showNumbers();
+    showTimeNumbers();
+  }
+
+  if (*modePtr == 2) {
+    switch (*configPtr) {      
+      case 0: 
+        if (*alarmSegPtr == 59) {
+            *alarmSegPtr = 0;
+        }
+        else {
+            *alarmSegPtr += 1;
+        }
+        break;
+
+      case 1:
+        if (*alarmMinPtr == 59) {
+            *alarmMinPtr = 0;
+        }
+        else {
+            *alarmMinPtr += 1;
+        }
+        break;
+
+      case 2:
+        if (*alarmHourPtr == 23) {
+            *alarmHourPtr = 0;
+        }
+        else {
+            *alarmHourPtr += 1;
+        }
+        break;
+    }
+
+    showAlarmNumbers();
   }
 
   return;
@@ -326,7 +413,7 @@ void countTime() {
   
 }
 
-void showNumbers() {
+void showTimeNumbers() {
 
   numberToSeg7(*segPtr % 10, segS0Ptr);
   numberToSeg7(*segPtr / 10, segS1Ptr);
@@ -336,6 +423,20 @@ void showNumbers() {
 
   numberToSeg7(*hourPtr % 10, segH0Ptr);
   numberToSeg7(*hourPtr / 10, segH1Ptr);
+
+  return;
+}
+
+void showAlarmNumbers() {
+
+  numberToSeg7(*alarmSegPtr % 10, segS0Ptr);
+  numberToSeg7(*alarmSegPtr / 10, segS1Ptr);
+
+  numberToSeg7(*alarmMinPtr % 10, segM0Ptr);
+  numberToSeg7(*alarmMinPtr / 10, segM1Ptr);
+
+  numberToSeg7(*alarmHourPtr % 10, segH0Ptr);
+  numberToSeg7(*alarmHourPtr / 10, segH1Ptr);
 
   return;
 
@@ -383,7 +484,6 @@ void numberToSeg7(int num, volatile unsigned char* seg7) {
     case 9:
       *seg7 = 0b0011000;
       break;
-
   }
   
   return;

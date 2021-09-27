@@ -4,7 +4,7 @@
  * Machine generated for CPU 'CPU' in SOPC Builder design 'system'
  * SOPC Builder design path: C:/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu/system.sopcinfo
  *
- * Generated: Tue Sep 21 16:13:55 CST 2021
+ * Generated: Mon Sep 27 16:49:03 CST 2021
  */
 
 /*
@@ -65,9 +65,9 @@
  *
  */
 
-#define RAM_REGION_BASE 0x1020
-#define RAM_REGION_SPAN 4064
-#define RESET_REGION_BASE 0x1000
+#define RAM_REGION_BASE 0x2020
+#define RAM_REGION_SPAN 5088
+#define RESET_REGION_BASE 0x2000
 #define RESET_REGION_SPAN 32
 
 

@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "system.h": "c",
+        "alt_irq.h": "c"
+    }
+}
