@@ -4,7 +4,7 @@
  * Machine generated for CPU 'CPU' in SOPC Builder design 'system'
  * SOPC Builder design path: C:/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu/system.sopcinfo
  *
- * Generated: Tue Sep 21 16:13:55 CST 2021
+ * Generated: Fri Oct 01 19:50:14 CST 2021
  */
 
 /*
@@ -59,16 +59,16 @@
  */
 
 #include "altera_nios2_gen2_irq.h"
-#include "altera_avalon_jtag_uart.h"
 #include "altera_avalon_timer.h"
+#include "altera_avalon_uart.h"
 
 /*
  * Allocate the device storage
  */
 
 ALTERA_NIOS2_GEN2_IRQ_INSTANCE ( CPU, CPU);
-ALTERA_AVALON_JTAG_UART_INSTANCE ( UART, UART);
 ALTERA_AVALON_TIMER_INSTANCE ( TIMER, TIMER);
+ALTERA_AVALON_UART_INSTANCE ( UART, UART);
 
 /*
  * Initialize the interrupt controller devices
@@ -92,5 +92,5 @@ void alt_irq_init ( const void* base )
 void alt_sys_init( void )
 {
     ALTERA_AVALON_TIMER_INIT ( TIMER, TIMER);
-    ALTERA_AVALON_JTAG_UART_INIT ( UART, UART);
+    ALTERA_AVALON_UART_INIT ( UART, UART);
 }

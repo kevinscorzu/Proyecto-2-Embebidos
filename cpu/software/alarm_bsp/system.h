@@ -4,7 +4,7 @@
  * Machine generated for CPU 'CPU' in SOPC Builder design 'system'
  * SOPC Builder design path: C:/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu/system.sopcinfo
  *
- * Generated: Mon Sep 27 16:49:03 CST 2021
+ * Generated: Fri Oct 01 19:50:14 CST 2021
  */
 
 /*
@@ -214,10 +214,10 @@
  *
  */
 
-#define __ALTERA_AVALON_JTAG_UART
 #define __ALTERA_AVALON_ONCHIP_MEMORY2
 #define __ALTERA_AVALON_PIO
 #define __ALTERA_AVALON_TIMER
+#define __ALTERA_AVALON_UART
 #define __ALTERA_NIOS2_GEN2
 
 
@@ -455,23 +455,23 @@
 #define ALT_NUM_INTERNAL_INTERRUPT_CONTROLLERS 1
 #define ALT_NUM_INTERRUPT_CONTROLLERS 1
 #define ALT_STDERR "/dev/UART"
-#define ALT_STDERR_BASE 0x50c8
+#define ALT_STDERR_BASE 0x50a0
 #define ALT_STDERR_DEV UART
-#define ALT_STDERR_IS_JTAG_UART
+#define ALT_STDERR_IS_UART
 #define ALT_STDERR_PRESENT
-#define ALT_STDERR_TYPE "altera_avalon_jtag_uart"
+#define ALT_STDERR_TYPE "altera_avalon_uart"
 #define ALT_STDIN "/dev/UART"
-#define ALT_STDIN_BASE 0x50c8
+#define ALT_STDIN_BASE 0x50a0
 #define ALT_STDIN_DEV UART
-#define ALT_STDIN_IS_JTAG_UART
+#define ALT_STDIN_IS_UART
 #define ALT_STDIN_PRESENT
-#define ALT_STDIN_TYPE "altera_avalon_jtag_uart"
+#define ALT_STDIN_TYPE "altera_avalon_uart"
 #define ALT_STDOUT "/dev/UART"
-#define ALT_STDOUT_BASE 0x50c8
+#define ALT_STDOUT_BASE 0x50a0
 #define ALT_STDOUT_DEV UART
-#define ALT_STDOUT_IS_JTAG_UART
+#define ALT_STDOUT_IS_UART
 #define ALT_STDOUT_PRESENT
-#define ALT_STDOUT_TYPE "altera_avalon_jtag_uart"
+#define ALT_STDOUT_TYPE "altera_avalon_uart"
 #define ALT_SYSTEM_NAME "system"
 
 
@@ -506,17 +506,24 @@
  *
  */
 
-#define ALT_MODULE_CLASS_UART altera_avalon_jtag_uart
-#define UART_BASE 0x50c8
+#define ALT_MODULE_CLASS_UART altera_avalon_uart
+#define UART_BASE 0x50a0
+#define UART_BAUD 115200
+#define UART_DATA_BITS 8
+#define UART_FIXED_BAUD 1
+#define UART_FREQ 50000000
 #define UART_IRQ 0
 #define UART_IRQ_INTERRUPT_CONTROLLER_ID 0
 #define UART_NAME "/dev/UART"
-#define UART_READ_DEPTH 64
-#define UART_READ_THRESHOLD 8
-#define UART_SPAN 8
-#define UART_TYPE "altera_avalon_jtag_uart"
-#define UART_WRITE_DEPTH 64
-#define UART_WRITE_THRESHOLD 8
+#define UART_PARITY 'N'
+#define UART_SIM_CHAR_STREAM ""
+#define UART_SIM_TRUE_BAUD 0
+#define UART_SPAN 32
+#define UART_STOP_BITS 1
+#define UART_SYNC_REG_DEPTH 2
+#define UART_TYPE "altera_avalon_uart"
+#define UART_USE_CTS_RTS 0
+#define UART_USE_EOP_REGISTER 0
 
 
 /*

@@ -1,16 +1,16 @@
-Fitter Status : Successful - Mon Sep 27 16:47:29 2021
+Fitter Status : Successful - Sun Oct 03 16:19:56 2021
 Quartus Prime Version : 20.1.1 Build 720 11/11/2020 SJ Lite Edition
 Revision Name : Alarm
 Top-level Entity Name : alarm_system
 Family : Cyclone V
 Device : 5CSEMA5F31C6
 Timing Models : Final
-Logic utilization (in ALMs) : 895 / 32,070 ( 3 % )
-Total registers : 1288
-Total pins : 55 / 457 ( 12 % )
+Logic utilization (in ALMs) : 832 / 32,070 ( 3 % )
+Total registers : 1244
+Total pins : 57 / 457 ( 12 % )
 Total virtual pins : 0
-Total block memory bits : 52,224 / 4,065,280 ( 1 % )
-Total RAM Blocks : 13 / 397 ( 3 % )
+Total block memory bits : 51,200 / 4,065,280 ( 1 % )
+Total RAM Blocks : 11 / 397 ( 3 % )
 Total DSP Blocks : 0 / 87 ( 0 % )
 Total HSSI RX PCSs : 0
 Total HSSI PMA RX Deserializers : 0

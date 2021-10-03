@@ -10,6 +10,8 @@
 		.seg7m0_export (<connected-to-seg7m0_export>), // seg7m0.export
 		.seg7m1_export (<connected-to-seg7m1_export>), // seg7m1.export
 		.seg7s0_export (<connected-to-seg7s0_export>), // seg7s0.export
-		.seg7s1_export (<connected-to-seg7s1_export>)  // seg7s1.export
+		.seg7s1_export (<connected-to-seg7s1_export>), // seg7s1.export
+		.uart_rxd      (<connected-to-uart_rxd>),      //   uart.rxd
+		.uart_txd      (<connected-to-uart_txd>)       //       .txd
 	);
 

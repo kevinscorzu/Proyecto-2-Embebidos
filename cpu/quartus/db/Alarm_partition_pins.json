@@ -4,6 +4,10 @@
 			"name" : "Top",
 			"pins" : [
 				{
+					"name" : "uart_tx",
+					"strict" : false
+				},
+				{
 					"name" : "leds[0]",
 					"strict" : false
 				},
@@ -221,6 +225,10 @@
 				},
 				{
 					"name" : "RESET",
+					"strict" : false
+				},
+				{
+					"name" : "uart_rx",
 					"strict" : false
 				}
 			]

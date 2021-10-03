@@ -1,13 +1,13 @@
-Analysis & Synthesis Status : Successful - Mon Sep 27 16:46:05 2021
+Analysis & Synthesis Status : Successful - Sun Oct 03 16:17:49 2021
 Quartus Prime Version : 20.1.1 Build 720 11/11/2020 SJ Lite Edition
 Revision Name : Alarm
 Top-level Entity Name : alarm_system
 Family : Cyclone V
 Logic utilization (in ALMs) : N/A
-Total registers : 1202
-Total pins : 55
+Total registers : 1157
+Total pins : 57
 Total virtual pins : 0
-Total block memory bits : 52,224
+Total block memory bits : 51,200
 Total DSP Blocks : 0
 Total HSSI RX PCSs : 0
 Total HSSI PMA RX Deserializers : 0

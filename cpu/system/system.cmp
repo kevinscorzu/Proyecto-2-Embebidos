@@ -11,7 +11,9 @@
 			seg7m0_export : out std_logic_vector(6 downto 0);        -- export
 			seg7m1_export : out std_logic_vector(6 downto 0);        -- export
 			seg7s0_export : out std_logic_vector(6 downto 0);        -- export
-			seg7s1_export : out std_logic_vector(6 downto 0)         -- export
+			seg7s1_export : out std_logic_vector(6 downto 0);        -- export
+			uart_rxd      : in  std_logic                    := 'X'; -- rxd
+			uart_txd      : out std_logic                            -- txd
 		);
 	end component system;
 

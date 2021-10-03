@@ -82,6 +82,9 @@
 #include "sys/alt_irq.h"
 #include "altera_avalon_pio_regs.h"
 #include "altera_avalon_timer_regs.h"
+#include "altera_avalon_uart_regs.h"
+
+#define ALTCPUFREQ 50000000
 
 #define TIMERMODE 0x4000
 #define TIMERIRQ 1
@@ -98,6 +101,11 @@
 #define BTSELIRQ 3
 #define BTSELIRQID 0
 
+#define UARTBAUD 115200
+#define UART 0x50a0
+#define UARTIRQ 0
+#define UARTIRQID 0
+
 volatile int btModeEdgeCapture;
 volatile int btIncEdgeCapture;
 volatile int btSelEdgeCapture;
@@ -112,6 +120,13 @@ volatile unsigned char* alarmSegPtr;
 volatile unsigned char* alarmMinPtr;
 volatile unsigned char* alarmHourPtr;
 volatile unsigned char* blinkPtr;
+volatile unsigned char* uartSeg0Ptr;
+volatile unsigned char* uartSeg1Ptr;
+volatile unsigned char* uartMin0Ptr;
+volatile unsigned char* uartMin1Ptr;
+volatile unsigned char* uartHour0Ptr;
+volatile unsigned char* uartHour1Ptr;
+volatile unsigned char* uartCounterPtr;
 
 volatile unsigned char* segS0Ptr = (unsigned char *) 0x5000;
 volatile unsigned char* segS1Ptr = (unsigned char *) 0x5010;
@@ -125,6 +140,7 @@ volatile unsigned char* ledsPtr = (unsigned char *) 0x5090;
 void initializeInterrupts();
 void handleTimer();
 void handleAlarm();
+void handleUart();
 void changeMode();
 void configureTimeMode();
 void countTime();
@@ -145,6 +161,13 @@ int main() {
   alarmMinPtr = ramPtr + 7;
   alarmHourPtr = ramPtr + 8;
   blinkPtr = ramPtr + 9;
+  uartSeg0Ptr = ramPtr + 10;
+  uartSeg1Ptr = ramPtr + 11;
+  uartMin0Ptr = ramPtr + 12;
+  uartMin1Ptr = ramPtr + 13;
+  uartHour0Ptr = ramPtr + 14;
+  uartHour1Ptr = ramPtr + 15;
+  uartCounterPtr = ramPtr + 16;
 
   *segS0Ptr = 0;
   *segS1Ptr = 0;
@@ -152,6 +175,14 @@ int main() {
   *segM1Ptr = 0;
   *segH0Ptr = 0;
   *segH1Ptr = 0;
+
+  *uartSeg0Ptr = 0;
+  *uartSeg1Ptr = 0;
+  *uartMin0Ptr = 0;
+  *uartMin1Ptr = 0;
+  *uartHour0Ptr = 0;
+  *uartHour1Ptr = 0;
+  *uartCounterPtr = 0;
 
   *modePtr = 0;
   
@@ -179,13 +210,18 @@ int main() {
 
 void initializeInterrupts() {
 
+  IOWR_ALTERA_AVALON_UART_DIVISOR(UART, (ALTCPUFREQ / UARTBAUD) + 1);
+	IOWR_ALTERA_AVALON_UART_CONTROL(UART, ALTERA_AVALON_UART_CONTROL_RRDY_MSK);
+
+  alt_ic_isr_register(UARTIRQID, UARTIRQ, handleUart, 0, 0);
+	alt_ic_irq_enable(UARTIRQID, UARTIRQ);
+
 	alt_irq_register(TIMERIRQ, 0, handleTimer);
 
 	IOWR_ALTERA_AVALON_TIMER_CONTROL(TIMERMODE,
 		  ALTERA_AVALON_TIMER_CONTROL_CONT_MSK
 		| ALTERA_AVALON_TIMER_CONTROL_START_MSK
 		| ALTERA_AVALON_TIMER_CONTROL_ITO_MSK);
-
   
   void* btModeEdgeCapturePtr = (void *) &btModeEdgeCapture;
   void* btIncEdgeCapturePtr = (void *) &btIncEdgeCapture;
@@ -245,6 +281,69 @@ void handleAlarm() {
   }
   else if (*blinkPtr <= 0) {
     *ledsPtr = 0b00000001;
+  }
+
+  return;
+
+}
+
+void handleUart() {
+
+  int type = IORD_ALTERA_AVALON_UART_STATUS(UART);
+
+  unsigned char value;
+
+	if (type & ALTERA_AVALON_UART_STATUS_RRDY_MSK) {
+
+    value = IORD_ALTERA_AVALON_UART_RXDATA(UART);
+
+    IOWR_ALTERA_AVALON_UART_STATUS(UART, 0);
+
+    IOWR_ALTERA_AVALON_UART_TXDATA(UART, value); // Quitar linea mas adelante
+    
+    switch (*uartCounterPtr) {      
+      case 0:
+          *uartHour1Ptr = value;
+        break;
+      case 1:
+          *uartHour0Ptr = value;
+        break;
+      case 2:
+          *uartMin1Ptr = value;
+        break;
+      case 3:
+          *uartMin0Ptr = value;
+        break;
+      case 4:
+          *uartSeg1Ptr = value;
+        break;
+      case 5:
+          *uartSeg0Ptr = value;
+        break;
+    }
+
+    *uartCounterPtr += 1;
+
+    if (value == 'A') {
+
+      *alarmHourPtr = ((*uartHour1Ptr - 48) * 10) + (*uartHour0Ptr - 48);
+      *alarmMinPtr = ((*uartMin1Ptr - 48) * 10) + (*uartMin0Ptr - 48);
+      *alarmSegPtr = ((*uartSeg1Ptr - 48) * 10) + (*uartSeg0Ptr - 48);
+
+      *uartCounterPtr = 0;
+
+    }
+    
+    if (value == 'C') {
+      
+      *hourPtr = ((*uartHour1Ptr - 48) * 10) + (*uartHour0Ptr - 48);
+      *minPtr = ((*uartMin1Ptr - 48) * 10) + (*uartMin0Ptr - 48);
+      *segPtr = ((*uartSeg1Ptr - 48) * 10) + (*uartSeg0Ptr - 48);
+
+      *uartCounterPtr = 0;
+
+    }
+
   }
 
   return;

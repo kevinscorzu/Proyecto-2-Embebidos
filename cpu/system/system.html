@@ -67,7 +67,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
   </table>
   <table class="blueBar">
    <tr>
-    <td class="l">2021.09.27.16:43:22</td>
+    <td class="l">2021.10.01.19:25:27</td>
     <td class="r">Datasheet</td>
    </tr>
   </table>
@@ -131,7 +131,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
      </a> altera_avalon_timer 20.1
      <br/>&#160;&#160;
      <a href="#module_UART"><b>UART</b>
-     </a> altera_avalon_jtag_uart 20.1</span>
+     </a> altera_avalon_uart 20.1</span>
    </div>
   </div>
   <div style="width:100% ;  height:10px"> </div>
@@ -326,9 +326,9 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
     <td class="empty"></td>
    </tr>
    <tr>
-    <td class="slaveb">avalon_jtag_slave&#160;</td>
-    <td class="addr"><span style="color:#989898">0x</span>000050c8</td>
-    <td class="addr"><span style="color:#989898">0x</span>000050c8</td>
+    <td class="slaveb">s1&#160;</td>
+    <td class="addr"><span style="color:#989898">0x</span>000050a0</td>
+    <td class="empty"></td>
    </tr>
   </table>
   <a name="module_BT_INC"> </a>
@@ -1002,7 +1002,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        <a href="#module_CLK">CLK</a>
       </td>
       <td class="from">clk&#160;&#160;</td>
-      <td class="main" rowspan="56">CPU</td>
+      <td class="main" rowspan="54">CPU</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;clk</td>
@@ -1012,42 +1012,6 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
      </tr>
      <tr>
       <td class="to">&#160;&#160;reset</td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">data_master&#160;&#160;</td>
-      <td class="neighbor" rowspan="6">
-       <a href="#module_UART">UART</a>
-      </td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;avalon_jtag_slave</td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">instruction_master&#160;&#160;</td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;avalon_jtag_slave</td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">irq&#160;&#160;</td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;irq</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
      </tr>
      <tr>
       <td></td>
@@ -1271,6 +1235,32 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <td class="from">data_master&#160;&#160;</td>
       <td class="neighbor" rowspan="4">
        <a href="#module_BT_INC">BT_INC</a>
+      </td>
+     </tr>
+     <tr>
+      <td></td>
+      <td></td>
+      <td class="to">&#160;&#160;s1</td>
+     </tr>
+     <tr>
+      <td></td>
+      <td></td>
+      <td class="from">irq&#160;&#160;</td>
+     </tr>
+     <tr>
+      <td></td>
+      <td></td>
+      <td class="to">&#160;&#160;irq</td>
+     </tr>
+     <tr style="height:6px">
+      <td></td>
+     </tr>
+     <tr>
+      <td></td>
+      <td></td>
+      <td class="from">data_master&#160;&#160;</td>
+      <td class="neighbor" rowspan="4">
+       <a href="#module_UART">UART</a>
       </td>
      </tr>
      <tr>
@@ -1979,7 +1969,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">instSlaveMapParam</td>
-        <td class="parametervalue">&lt;address-map&gt;&lt;slave name='RAM.s1' start='0x2000' end='0x3400' type='altera_avalon_onchip_memory2.s1' /&gt;&lt;slave name='CPU.debug_mem_slave' start='0x4800' end='0x5000' type='altera_nios2_gen2.debug_mem_slave' /&gt;&lt;slave name='UART.avalon_jtag_slave' start='0x50C8' end='0x50D0' type='altera_avalon_jtag_uart.avalon_jtag_slave' /&gt;&lt;/address-map&gt;</td>
+        <td class="parametervalue">&lt;address-map&gt;&lt;slave name='RAM.s1' start='0x2000' end='0x3400' type='altera_avalon_onchip_memory2.s1' /&gt;&lt;slave name='CPU.debug_mem_slave' start='0x4800' end='0x5000' type='altera_nios2_gen2.debug_mem_slave' /&gt;&lt;/address-map&gt;</td>
        </tr>
        <tr>
         <td class="parametername">faSlaveMapParam</td>
@@ -1987,7 +1977,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">dataSlaveMapParam</td>
-        <td class="parametervalue">&lt;address-map&gt;&lt;slave name='RAM.s1' start='0x2000' end='0x3400' type='altera_avalon_onchip_memory2.s1' /&gt;&lt;slave name='TIMER.s1' start='0x4000' end='0x4020' type='altera_avalon_timer.s1' /&gt;&lt;slave name='CPU.debug_mem_slave' start='0x4800' end='0x5000' type='altera_nios2_gen2.debug_mem_slave' /&gt;&lt;slave name='SEG7_S0.s1' start='0x5000' end='0x5010' type='altera_avalon_pio.s1' /&gt;&lt;slave name='SEG7_S1.s1' start='0x5010' end='0x5020' type='altera_avalon_pio.s1' /&gt;&lt;slave name='SEG7_M0.s1' start='0x5020' end='0x5030' type='altera_avalon_pio.s1' /&gt;&lt;slave name='SEG7_M1.s1' start='0x5030' end='0x5040' type='altera_avalon_pio.s1' /&gt;&lt;slave name='SEG7_H0.s1' start='0x5040' end='0x5050' type='altera_avalon_pio.s1' /&gt;&lt;slave name='SEG7_H1.s1' start='0x5050' end='0x5060' type='altera_avalon_pio.s1' /&gt;&lt;slave name='BT_MODE.s1' start='0x5060' end='0x5070' type='altera_avalon_pio.s1' /&gt;&lt;slave name='BT_SEL.s1' start='0x5070' end='0x5080' type='altera_avalon_pio.s1' /&gt;&lt;slave name='BT_INC.s1' start='0x5080' end='0x5090' type='altera_avalon_pio.s1' /&gt;&lt;slave name='LEDS.s1' start='0x5090' end='0x50A0' type='altera_avalon_pio.s1' /&gt;&lt;slave name='UART.avalon_jtag_slave' start='0x50C8' end='0x50D0' type='altera_avalon_jtag_uart.avalon_jtag_slave' /&gt;&lt;/address-map&gt;</td>
+        <td class="parametervalue">&lt;address-map&gt;&lt;slave name='RAM.s1' start='0x2000' end='0x3400' type='altera_avalon_onchip_memory2.s1' /&gt;&lt;slave name='TIMER.s1' start='0x4000' end='0x4020' type='altera_avalon_timer.s1' /&gt;&lt;slave name='CPU.debug_mem_slave' start='0x4800' end='0x5000' type='altera_nios2_gen2.debug_mem_slave' /&gt;&lt;slave name='SEG7_S0.s1' start='0x5000' end='0x5010' type='altera_avalon_pio.s1' /&gt;&lt;slave name='SEG7_S1.s1' start='0x5010' end='0x5020' type='altera_avalon_pio.s1' /&gt;&lt;slave name='SEG7_M0.s1' start='0x5020' end='0x5030' type='altera_avalon_pio.s1' /&gt;&lt;slave name='SEG7_M1.s1' start='0x5030' end='0x5040' type='altera_avalon_pio.s1' /&gt;&lt;slave name='SEG7_H0.s1' start='0x5040' end='0x5050' type='altera_avalon_pio.s1' /&gt;&lt;slave name='SEG7_H1.s1' start='0x5050' end='0x5060' type='altera_avalon_pio.s1' /&gt;&lt;slave name='BT_MODE.s1' start='0x5060' end='0x5070' type='altera_avalon_pio.s1' /&gt;&lt;slave name='BT_SEL.s1' start='0x5070' end='0x5080' type='altera_avalon_pio.s1' /&gt;&lt;slave name='BT_INC.s1' start='0x5080' end='0x5090' type='altera_avalon_pio.s1' /&gt;&lt;slave name='LEDS.s1' start='0x5090' end='0x50A0' type='altera_avalon_pio.s1' /&gt;&lt;slave name='UART.s1' start='0x50A0' end='0x50C0' type='altera_avalon_uart.s1' /&gt;&lt;/address-map&gt;</td>
        </tr>
        <tr>
         <td class="parametername">tightlyCoupledDataMaster0MapParam</td>
@@ -4056,25 +4046,19 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
   <a name="module_UART"> </a>
   <div>
    <hr/>
-   <h2>UART</h2>altera_avalon_jtag_uart v20.1
+   <h2>UART</h2>altera_avalon_uart v20.1
    <br/>
    <div class="greydiv">
     <table class="connectionboxes">
      <tr>
-      <td class="neighbor" rowspan="6">
+      <td class="neighbor" rowspan="4">
        <a href="#module_CPU">CPU</a>
       </td>
       <td class="from">data_master&#160;&#160;</td>
-      <td class="main" rowspan="11">UART</td>
+      <td class="main" rowspan="9">UART</td>
      </tr>
      <tr>
-      <td class="to">&#160;&#160;avalon_jtag_slave</td>
-     </tr>
-     <tr>
-      <td class="from">instruction_master&#160;&#160;</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;avalon_jtag_slave</td>
+      <td class="to">&#160;&#160;s1</td>
      </tr>
      <tr>
       <td class="from">irq&#160;&#160;</td>
@@ -4110,35 +4094,51 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <h2>Parameters</h2>
       <table>
        <tr>
-        <td class="parametername">allowMultipleConnections</td>
-        <td class="parametervalue">false</td>
+        <td class="parametername">baud</td>
+        <td class="parametervalue">115200</td>
        </tr>
        <tr>
-        <td class="parametername">hubInstanceID</td>
-        <td class="parametervalue">0</td>
-       </tr>
-       <tr>
-        <td class="parametername">readBufferDepth</td>
-        <td class="parametervalue">64</td>
-       </tr>
-       <tr>
-        <td class="parametername">readIRQThreshold</td>
+        <td class="parametername">dataBits</td>
         <td class="parametervalue">8</td>
        </tr>
        <tr>
-        <td class="parametername">simInputCharacterStream</td>
+        <td class="parametername">fixedBaud</td>
+        <td class="parametervalue">true</td>
+       </tr>
+       <tr>
+        <td class="parametername">parity</td>
+        <td class="parametervalue">NONE</td>
+       </tr>
+       <tr>
+        <td class="parametername">simCharStream</td>
         <td class="parametervalue"></td>
        </tr>
        <tr>
-        <td class="parametername">simInteractiveOptions</td>
-        <td class="parametervalue">NO_INTERACTIVE_WINDOWS</td>
-       </tr>
-       <tr>
-        <td class="parametername">useRegistersForReadBuffer</td>
+        <td class="parametername">simInteractiveInputEnable</td>
         <td class="parametervalue">false</td>
        </tr>
        <tr>
-        <td class="parametername">useRegistersForWriteBuffer</td>
+        <td class="parametername">simInteractiveOutputEnable</td>
+        <td class="parametervalue">false</td>
+       </tr>
+       <tr>
+        <td class="parametername">simTrueBaud</td>
+        <td class="parametervalue">false</td>
+       </tr>
+       <tr>
+        <td class="parametername">stopBits</td>
+        <td class="parametervalue">1</td>
+       </tr>
+       <tr>
+        <td class="parametername">syncRegDepth</td>
+        <td class="parametervalue">2</td>
+       </tr>
+       <tr>
+        <td class="parametername">useCtsRts</td>
+        <td class="parametervalue">false</td>
+       </tr>
+       <tr>
+        <td class="parametername">useEopRegister</td>
         <td class="parametervalue">false</td>
        </tr>
        <tr>
@@ -4146,32 +4146,16 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
         <td class="parametervalue">false</td>
        </tr>
        <tr>
-        <td class="parametername">writeBufferDepth</td>
-        <td class="parametervalue">64</td>
-       </tr>
-       <tr>
-        <td class="parametername">writeIRQThreshold</td>
-        <td class="parametervalue">8</td>
-       </tr>
-       <tr>
-        <td class="parametername">clkFreq</td>
+        <td class="parametername">clockRate</td>
         <td class="parametervalue">50000000</td>
        </tr>
        <tr>
-        <td class="parametername">avalonSpec</td>
-        <td class="parametervalue">2.0</td>
+        <td class="parametername">baudError</td>
+        <td class="parametervalue">0.01</td>
        </tr>
        <tr>
-        <td class="parametername">legacySignalAllow</td>
-        <td class="parametervalue">false</td>
-       </tr>
-       <tr>
-        <td class="parametername">enableInteractiveInput</td>
-        <td class="parametervalue">false</td>
-       </tr>
-       <tr>
-        <td class="parametername">enableInteractiveOutput</td>
-        <td class="parametervalue">false</td>
+        <td class="parametername">parityFisrtChar</td>
+        <td class="parametervalue">N</td>
        </tr>
        <tr>
         <td class="parametername">deviceFamily</td>
@@ -4191,20 +4175,48 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <h2>Software Assignments</h2>
       <table>
        <tr>
-        <td class="parametername">READ_DEPTH</td>
-        <td class="parametervalue">64</td>
+        <td class="parametername">BAUD</td>
+        <td class="parametervalue">115200</td>
        </tr>
        <tr>
-        <td class="parametername">READ_THRESHOLD</td>
+        <td class="parametername">DATA_BITS</td>
         <td class="parametervalue">8</td>
        </tr>
        <tr>
-        <td class="parametername">WRITE_DEPTH</td>
-        <td class="parametervalue">64</td>
+        <td class="parametername">FIXED_BAUD</td>
+        <td class="parametervalue">1</td>
        </tr>
        <tr>
-        <td class="parametername">WRITE_THRESHOLD</td>
-        <td class="parametervalue">8</td>
+        <td class="parametername">FREQ</td>
+        <td class="parametervalue">50000000</td>
+       </tr>
+       <tr>
+        <td class="parametername">PARITY</td>
+        <td class="parametervalue">'N'</td>
+       </tr>
+       <tr>
+        <td class="parametername">SIM_CHAR_STREAM</td>
+        <td class="parametervalue">""</td>
+       </tr>
+       <tr>
+        <td class="parametername">SIM_TRUE_BAUD</td>
+        <td class="parametervalue">0</td>
+       </tr>
+       <tr>
+        <td class="parametername">STOP_BITS</td>
+        <td class="parametervalue">1</td>
+       </tr>
+       <tr>
+        <td class="parametername">SYNC_REG_DEPTH</td>
+        <td class="parametervalue">2</td>
+       </tr>
+       <tr>
+        <td class="parametername">USE_CTS_RTS</td>
+        <td class="parametervalue">0</td>
+       </tr>
+       <tr>
+        <td class="parametername">USE_EOP_REGISTER</td>
+        <td class="parametervalue">0</td>
        </tr>
       </table>
      </td>
@@ -4214,7 +4226,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
   <table class="blueBar">
    <tr>
     <td class="l">generation took 0.01 seconds</td>
-    <td class="r">rendering took 0.10 seconds</td>
+    <td class="r">rendering took 0.17 seconds</td>
    </tr>
   </table>
  </body>

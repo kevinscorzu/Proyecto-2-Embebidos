@@ -11,7 +11,9 @@
 			seg7m0_export : out std_logic_vector(6 downto 0);        -- export
 			seg7m1_export : out std_logic_vector(6 downto 0);        -- export
 			seg7s0_export : out std_logic_vector(6 downto 0);        -- export
-			seg7s1_export : out std_logic_vector(6 downto 0)         -- export
+			seg7s1_export : out std_logic_vector(6 downto 0);        -- export
+			uart_rxd      : in  std_logic                    := 'X'; -- rxd
+			uart_txd      : out std_logic                            -- txd
 		);
 	end component system;
 
@@ -28,6 +30,8 @@
 			seg7m0_export => CONNECTED_TO_seg7m0_export, -- seg7m0.export
 			seg7m1_export => CONNECTED_TO_seg7m1_export, -- seg7m1.export
 			seg7s0_export => CONNECTED_TO_seg7s0_export, -- seg7s0.export
-			seg7s1_export => CONNECTED_TO_seg7s1_export  -- seg7s1.export
+			seg7s1_export => CONNECTED_TO_seg7s1_export, -- seg7s1.export
+			uart_rxd      => CONNECTED_TO_uart_rxd,      --   uart.rxd
+			uart_txd      => CONNECTED_TO_uart_txd       --       .txd
 		);
 

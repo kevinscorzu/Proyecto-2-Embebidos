@@ -1,30 +1,16 @@
-17:09:53 **** Build of configuration Nios II for project alarm ****
-wsl make all 
-Info: Building /mnt/c/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu/software/alarm_bsp/
-make --no-print-directory -C /mnt/c/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu/software/alarm_bsp/
-[BSP build complete]
-Info: Compiling hello_world_small.c to obj/default/hello_world_small.o
-nios2-elf-gcc.exe -xc -MP -MMD -c -Ic:/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu/software/alarm_bsp//HAL/inc -Ic:/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu/software/alarm_bsp/ -Ic:/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu/software/alarm_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_C_PLUS_PLUS -DALT_NO_CLEAN_EXIT -D'exit(a)=_exit(a)' -DALT_NO_EXIT -DALT_USE_DIRECT_DRIVERS -DALT_NO_INSTRUCTION_EMULATION -DALT_USE_SMALL_DRIVERS -DSMALL_C_LIB -DALT_SINGLE_THREADED    -Os -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx -mgpopt=global  -o obj/default/hello_world_small.o hello_world_small.c
-hello_world_small.c: In function 'initializeInterrupts':
-hello_world_small.c:182:2: warning: implicit declaration of function 'alt_irq_register'; did you mean 'alt_ic_isr_register'? [-Wimplicit-function-declaration]
-  182 |  alt_irq_register(TIMERIRQ, 0, handleTimer);
-      |  ^~~~~~~~~~~~~~~~
-      |  alt_ic_isr_register
-Info: Linking alarm.elf
-nios2-elf-g++.exe  -T'c:/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu/software/alarm_bsp//linker.x' -msys-crt0='c:/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu/software/alarm_bsp//obj/HAL/src/crt0.o' -msys-lib=hal_bsp -Lc:/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu/software/alarm_bsp/  -msmallc  -Wl,-Map=alarm.map   -Os -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx -mgpopt=global  -o alarm.elf obj/default/hello_world_small.o -lm -msys-lib=m
-nios2-elf-insert.exe alarm.elf --thread_model hal --cpu_name CPU --qsys true --simulation_enabled false --stderr_dev UART --stdin_dev UART --stdout_dev UART --sopc_system_name system --quartus_project_dir "c:/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu"
-Info: (alarm.elf) 4012 Bytes program size (code + initialized data).
-Info:             1068 Bytes free for stack + heap.
-Info: Creating alarm.objdump
-nios2-elf-objdump.exe --disassemble --syms --all-header --source alarm.elf >alarm.objdump
-[alarm build complete]
-17:10:08 **** Build of configuration Nios II for project alarm ****
+17:47:51 **** Incremental Build of configuration Nios II for project alarm ****
 wsl make all 
 Info: Building /mnt/c/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu/software/alarm_bsp/
 make --no-print-directory -C /mnt/c/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu/software/alarm_bsp/
 [BSP build complete]
 [alarm build complete]
-17:10:10 **** Incremental Build of configuration Nios II for project alarm ****
+17:48:03 **** Build of configuration Nios II for project alarm ****
+wsl make all 
+Info: Building /mnt/c/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu/software/alarm_bsp/
+make --no-print-directory -C /mnt/c/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu/software/alarm_bsp/
+[BSP build complete]
+[alarm build complete]
+17:48:05 **** Incremental Build of configuration Nios II for project alarm ****
 wsl make all 
 Info: Building /mnt/c/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu/software/alarm_bsp/
 make --no-print-directory -C /mnt/c/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu/software/alarm_bsp/

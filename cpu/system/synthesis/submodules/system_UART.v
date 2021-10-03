@@ -18,51 +18,167 @@
 // altera message_level Level1 
 // altera message_off 10034 10035 10036 10037 10230 10240 10030 
 
-module system_UART_sim_scfifo_w (
-                                  // inputs:
-                                   clk,
-                                   fifo_wdata,
-                                   fifo_wr,
+module system_UART_tx (
+                        // inputs:
+                         baud_divisor,
+                         begintransfer,
+                         clk,
+                         clk_en,
+                         do_force_break,
+                         reset_n,
+                         status_wr_strobe,
+                         tx_data,
+                         tx_wr_strobe,
 
-                                  // outputs:
-                                   fifo_FF,
-                                   r_dat,
-                                   wfifo_empty,
-                                   wfifo_used
-                                )
+                        // outputs:
+                         tx_overrun,
+                         tx_ready,
+                         tx_shift_empty,
+                         txd
+                      )
 ;
 
-  output           fifo_FF;
-  output  [  7: 0] r_dat;
-  output           wfifo_empty;
-  output  [  5: 0] wfifo_used;
+  output           tx_overrun;
+  output           tx_ready;
+  output           tx_shift_empty;
+  output           txd;
+  input   [  8: 0] baud_divisor;
+  input            begintransfer;
   input            clk;
-  input   [  7: 0] fifo_wdata;
-  input            fifo_wr;
+  input            clk_en;
+  input            do_force_break;
+  input            reset_n;
+  input            status_wr_strobe;
+  input   [  7: 0] tx_data;
+  input            tx_wr_strobe;
 
 
-wire             fifo_FF;
-wire    [  7: 0] r_dat;
-wire             wfifo_empty;
-wire    [  5: 0] wfifo_used;
+reg              baud_clk_en;
+reg     [  8: 0] baud_rate_counter;
+wire             baud_rate_counter_is_zero;
+reg              do_load_shifter;
+wire             do_shift;
+reg              pre_txd;
+wire             shift_done;
+wire    [  9: 0] tx_load_val;
+reg              tx_overrun;
+reg              tx_ready;
+reg              tx_shift_empty;
+wire             tx_shift_reg_out;
+wire    [  9: 0] tx_shift_register_contents;
+wire             tx_wr_strobe_onset;
+reg              txd;
+wire    [  9: 0] unxshiftxtx_shift_register_contentsxtx_shift_reg_outxx5_in;
+reg     [  9: 0] unxshiftxtx_shift_register_contentsxtx_shift_reg_outxx5_out;
+  assign tx_wr_strobe_onset = tx_wr_strobe && begintransfer;
+  assign tx_load_val = {{1 {1'b1}},
+    tx_data,
+    1'b0};
 
-//synthesis translate_off
-//////////////// SIMULATION-ONLY CONTENTS
-  always @(posedge clk)
+  assign shift_done = ~(|tx_shift_register_contents);
+  always @(posedge clk or negedge reset_n)
     begin
-      if (fifo_wr)
-          $write("%c", fifo_wdata);
+      if (reset_n == 0)
+          do_load_shifter <= 0;
+      else if (clk_en)
+          do_load_shifter <= (~tx_ready) && shift_done;
     end
 
 
-  assign wfifo_used = {6{1'b0}};
-  assign r_dat = {8{1'b0}};
-  assign fifo_FF = 1'b0;
-  assign wfifo_empty = 1'b1;
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          tx_ready <= 1'b1;
+      else if (clk_en)
+          if (tx_wr_strobe_onset)
+              tx_ready <= 0;
+          else if (do_load_shifter)
+              tx_ready <= -1;
+    end
 
-//////////////// END SIMULATION-ONLY CONTENTS
 
-//synthesis translate_on
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          tx_overrun <= 0;
+      else if (clk_en)
+          if (status_wr_strobe)
+              tx_overrun <= 0;
+          else if (~tx_ready && tx_wr_strobe_onset)
+              tx_overrun <= -1;
+    end
+
+
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          tx_shift_empty <= 1'b1;
+      else if (clk_en)
+          tx_shift_empty <= tx_ready && shift_done;
+    end
+
+
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          baud_rate_counter <= 0;
+      else if (clk_en)
+          if (baud_rate_counter_is_zero || do_load_shifter)
+              baud_rate_counter <= baud_divisor;
+          else 
+            baud_rate_counter <= baud_rate_counter - 1;
+    end
+
+
+  assign baud_rate_counter_is_zero = baud_rate_counter == 0;
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          baud_clk_en <= 0;
+      else if (clk_en)
+          baud_clk_en <= baud_rate_counter_is_zero;
+    end
+
+
+  assign do_shift = baud_clk_en  && 
+    (~shift_done) && 
+    (~do_load_shifter);
+
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          pre_txd <= 1;
+      else if (~shift_done)
+          pre_txd <= tx_shift_reg_out;
+    end
+
+
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          txd <= 1;
+      else if (clk_en)
+          txd <= pre_txd & ~do_force_break;
+    end
+
+
+  //_reg, which is an e_register
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          unxshiftxtx_shift_register_contentsxtx_shift_reg_outxx5_out <= 0;
+      else if (clk_en)
+          unxshiftxtx_shift_register_contentsxtx_shift_reg_outxx5_out <= unxshiftxtx_shift_register_contentsxtx_shift_reg_outxx5_in;
+    end
+
+
+  assign unxshiftxtx_shift_register_contentsxtx_shift_reg_outxx5_in = (do_load_shifter)? tx_load_val :
+    (do_shift)? {1'b0,
+    unxshiftxtx_shift_register_contentsxtx_shift_reg_outxx5_out[9 : 1]} :
+    unxshiftxtx_shift_register_contentsxtx_shift_reg_outxx5_out;
+
+  assign tx_shift_register_contents = unxshiftxtx_shift_register_contentsxtx_shift_reg_outxx5_out;
+  assign tx_shift_reg_out = unxshiftxtx_shift_register_contentsxtx_shift_reg_outxx5_out[0];
 
 endmodule
 
@@ -75,79 +191,87 @@ endmodule
 // altera message_level Level1 
 // altera message_off 10034 10035 10036 10037 10230 10240 10030 
 
-module system_UART_scfifo_w (
-                              // inputs:
-                               clk,
-                               fifo_clear,
-                               fifo_wdata,
-                               fifo_wr,
-                               rd_wfifo,
+module system_UART_rx_stimulus_source (
+                                        // inputs:
+                                         baud_divisor,
+                                         clk,
+                                         clk_en,
+                                         reset_n,
+                                         rx_char_ready,
+                                         rxd,
 
-                              // outputs:
-                               fifo_FF,
-                               r_dat,
-                               wfifo_empty,
-                               wfifo_used
-                            )
+                                        // outputs:
+                                         source_rxd
+                                      )
 ;
 
-  output           fifo_FF;
-  output  [  7: 0] r_dat;
-  output           wfifo_empty;
-  output  [  5: 0] wfifo_used;
+  output           source_rxd;
+  input   [  8: 0] baud_divisor;
   input            clk;
-  input            fifo_clear;
-  input   [  7: 0] fifo_wdata;
-  input            fifo_wr;
-  input            rd_wfifo;
+  input            clk_en;
+  input            reset_n;
+  input            rx_char_ready;
+  input            rxd;
 
 
-wire             fifo_FF;
-wire    [  7: 0] r_dat;
-wire             wfifo_empty;
-wire    [  5: 0] wfifo_used;
+reg     [  7: 0] d1_stim_data;
+reg              delayed_unxrx_char_readyxx0;
+wire             do_send_stim_data;
+wire             pickup_pulse;
+wire             source_rxd;
+wire    [  7: 0] stim_data;
+wire             unused_empty;
+wire             unused_overrun;
+wire             unused_ready;
 
 //synthesis translate_off
 //////////////// SIMULATION-ONLY CONTENTS
-  system_UART_sim_scfifo_w the_system_UART_sim_scfifo_w
+  //stimulus_transmitter, which is an e_instance
+  system_UART_tx stimulus_transmitter
     (
-      .clk         (clk),
-      .fifo_FF     (fifo_FF),
-      .fifo_wdata  (fifo_wdata),
-      .fifo_wr     (fifo_wr),
-      .r_dat       (r_dat),
-      .wfifo_empty (wfifo_empty),
-      .wfifo_used  (wfifo_used)
+      .baud_divisor     (baud_divisor),
+      .begintransfer    (do_send_stim_data),
+      .clk              (clk),
+      .clk_en           (clk_en),
+      .do_force_break   (1'b0),
+      .reset_n          (reset_n),
+      .status_wr_strobe (1'b0),
+      .tx_data          (d1_stim_data),
+      .tx_overrun       (unused_overrun),
+      .tx_ready         (unused_ready),
+      .tx_shift_empty   (unused_empty),
+      .tx_wr_strobe     (1'b1),
+      .txd              (source_rxd)
     );
 
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          d1_stim_data <= 0;
+      else if (do_send_stim_data)
+          d1_stim_data <= stim_data;
+    end
+
+
+  assign stim_data = 8'b0;
+  //delayed_unxrx_char_readyxx0, which is an e_register
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          delayed_unxrx_char_readyxx0 <= 0;
+      else if (clk_en)
+          delayed_unxrx_char_readyxx0 <= rx_char_ready;
+    end
+
+
+  assign pickup_pulse = ~(rx_char_ready) &  (delayed_unxrx_char_readyxx0);
+  assign do_send_stim_data = (pickup_pulse || 1'b0) && 1'b0;
 
 //////////////// END SIMULATION-ONLY CONTENTS
 
 //synthesis translate_on
 //synthesis read_comments_as_HDL on
-//  scfifo wfifo
-//    (
-//      .aclr (fifo_clear),
-//      .clock (clk),
-//      .data (fifo_wdata),
-//      .empty (wfifo_empty),
-//      .full (fifo_FF),
-//      .q (r_dat),
-//      .rdreq (rd_wfifo),
-//      .usedw (wfifo_used),
-//      .wrreq (fifo_wr)
-//    );
-//
-//  defparam wfifo.lpm_hint = "RAM_BLOCK_TYPE=AUTO",
-//           wfifo.lpm_numwords = 64,
-//           wfifo.lpm_showahead = "OFF",
-//           wfifo.lpm_type = "scfifo",
-//           wfifo.lpm_width = 8,
-//           wfifo.lpm_widthu = 6,
-//           wfifo.overflow_checking = "OFF",
-//           wfifo.underflow_checking = "OFF",
-//           wfifo.use_eab = "ON";
-//
+//  assign source_rxd = rxd;
 //synthesis read_comments_as_HDL off
 
 endmodule
@@ -161,73 +285,253 @@ endmodule
 // altera message_level Level1 
 // altera message_off 10034 10035 10036 10037 10230 10240 10030 
 
-module system_UART_sim_scfifo_r (
-                                  // inputs:
-                                   clk,
-                                   fifo_rd,
-                                   rst_n,
+module system_UART_rx (
+                        // inputs:
+                         baud_divisor,
+                         begintransfer,
+                         clk,
+                         clk_en,
+                         reset_n,
+                         rx_rd_strobe,
+                         rxd,
+                         status_wr_strobe,
 
-                                  // outputs:
-                                   fifo_EF,
-                                   fifo_rdata,
-                                   rfifo_full,
-                                   rfifo_used
-                                )
+                        // outputs:
+                         break_detect,
+                         framing_error,
+                         parity_error,
+                         rx_char_ready,
+                         rx_data,
+                         rx_overrun
+                      )
 ;
 
-  output           fifo_EF;
-  output  [  7: 0] fifo_rdata;
-  output           rfifo_full;
-  output  [  5: 0] rfifo_used;
+  output           break_detect;
+  output           framing_error;
+  output           parity_error;
+  output           rx_char_ready;
+  output  [  7: 0] rx_data;
+  output           rx_overrun;
+  input   [  8: 0] baud_divisor;
+  input            begintransfer;
   input            clk;
-  input            fifo_rd;
-  input            rst_n;
+  input            clk_en;
+  input            reset_n;
+  input            rx_rd_strobe;
+  input            rxd;
+  input            status_wr_strobe;
 
 
-reg     [ 31: 0] bytes_left;
-wire             fifo_EF;
-reg              fifo_rd_d;
-wire    [  7: 0] fifo_rdata;
-wire             new_rom;
-wire    [ 31: 0] num_bytes;
-wire    [  6: 0] rfifo_entries;
-wire             rfifo_full;
-wire    [  5: 0] rfifo_used;
+reg              baud_clk_en;
+wire    [  8: 0] baud_load_value;
+reg     [  8: 0] baud_rate_counter;
+wire             baud_rate_counter_is_zero;
+reg              break_detect;
+reg              delayed_unxrx_in_processxx3;
+reg              delayed_unxsync_rxdxx1;
+reg              delayed_unxsync_rxdxx2;
+reg              do_start_rx;
+reg              framing_error;
+wire             got_new_char;
+wire    [  7: 0] half_bit_cell_divisor;
+wire             is_break;
+wire             is_framing_error;
+wire             parity_error;
+wire    [  7: 0] raw_data_in;
+reg              rx_char_ready;
+reg     [  7: 0] rx_data;
+wire             rx_in_process;
+reg              rx_overrun;
+wire             rx_rd_strobe_onset;
+wire             rxd_edge;
+wire             rxd_falling;
+wire    [  9: 0] rxd_shift_reg;
+wire             sample_enable;
+wire             shift_reg_start_bit_n;
+wire             source_rxd;
+wire             stop_bit;
+wire             sync_rxd;
+wire             unused_start_bit;
+wire    [  9: 0] unxshiftxrxd_shift_regxshift_reg_start_bit_nxx6_in;
+reg     [  9: 0] unxshiftxrxd_shift_regxshift_reg_start_bit_nxx6_out;
+  system_UART_rx_stimulus_source the_system_UART_rx_stimulus_source
+    (
+      .baud_divisor  (baud_divisor),
+      .clk           (clk),
+      .clk_en        (clk_en),
+      .reset_n       (reset_n),
+      .rx_char_ready (rx_char_ready),
+      .rxd           (rxd),
+      .source_rxd    (source_rxd)
+    );
 
-//synthesis translate_off
-//////////////// SIMULATION-ONLY CONTENTS
-  // Generate rfifo_entries for simulation
-  always @(posedge clk or negedge rst_n)
+  altera_std_synchronizer the_altera_std_synchronizer
+    (
+      .clk (clk),
+      .din (source_rxd),
+      .dout (sync_rxd),
+      .reset_n (reset_n)
+    );
+
+  defparam the_altera_std_synchronizer.depth = 2;
+
+  //delayed_unxsync_rxdxx1, which is an e_register
+  always @(posedge clk or negedge reset_n)
     begin
-      if (rst_n == 0)
-        begin
-          bytes_left <= 32'h0;
-          fifo_rd_d <= 1'b0;
-        end
-      else 
-        begin
-          fifo_rd_d <= fifo_rd;
-          // decrement on read
-          if (fifo_rd_d)
-              bytes_left <= bytes_left - 1'b1;
-          // catch new contents
-          if (new_rom)
-              bytes_left <= num_bytes;
-        end
+      if (reset_n == 0)
+          delayed_unxsync_rxdxx1 <= 0;
+      else if (clk_en)
+          delayed_unxsync_rxdxx1 <= sync_rxd;
     end
 
 
-  assign fifo_EF = bytes_left == 32'b0;
-  assign rfifo_full = bytes_left > 7'h40;
-  assign rfifo_entries = (rfifo_full) ? 7'h40 : bytes_left;
-  assign rfifo_used = rfifo_entries[5 : 0];
-  assign new_rom = 1'b0;
-  assign num_bytes = 32'b0;
-  assign fifo_rdata = 8'b0;
+  assign rxd_falling = ~(sync_rxd) &  (delayed_unxsync_rxdxx1);
+  //delayed_unxsync_rxdxx2, which is an e_register
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          delayed_unxsync_rxdxx2 <= 0;
+      else if (clk_en)
+          delayed_unxsync_rxdxx2 <= sync_rxd;
+    end
 
-//////////////// END SIMULATION-ONLY CONTENTS
 
-//synthesis translate_on
+  assign rxd_edge = (sync_rxd) ^  (delayed_unxsync_rxdxx2);
+  assign rx_rd_strobe_onset = rx_rd_strobe && begintransfer;
+  assign half_bit_cell_divisor = baud_divisor[8 : 1];
+  assign baud_load_value = (rxd_edge)? half_bit_cell_divisor :
+    baud_divisor;
+
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          baud_rate_counter <= 0;
+      else if (clk_en)
+          if (baud_rate_counter_is_zero || rxd_edge)
+              baud_rate_counter <= baud_load_value;
+          else 
+            baud_rate_counter <= baud_rate_counter - 1;
+    end
+
+
+  assign baud_rate_counter_is_zero = baud_rate_counter == 0;
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          baud_clk_en <= 0;
+      else if (clk_en)
+          if (rxd_edge)
+              baud_clk_en <= 0;
+          else 
+            baud_clk_en <= baud_rate_counter_is_zero;
+    end
+
+
+  assign sample_enable = baud_clk_en && rx_in_process;
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          do_start_rx <= 0;
+      else if (clk_en)
+          if (~rx_in_process && rxd_falling)
+              do_start_rx <= 1;
+          else 
+            do_start_rx <= 0;
+    end
+
+
+  assign rx_in_process = shift_reg_start_bit_n;
+  assign {stop_bit,
+raw_data_in,
+unused_start_bit} = rxd_shift_reg;
+  assign is_break = ~(|rxd_shift_reg);
+  assign is_framing_error = ~stop_bit && ~is_break;
+  //delayed_unxrx_in_processxx3, which is an e_register
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          delayed_unxrx_in_processxx3 <= 0;
+      else if (clk_en)
+          delayed_unxrx_in_processxx3 <= rx_in_process;
+    end
+
+
+  assign got_new_char = ~(rx_in_process) &  (delayed_unxrx_in_processxx3);
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          rx_data <= 0;
+      else if (got_new_char)
+          rx_data <= raw_data_in;
+    end
+
+
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          framing_error <= 0;
+      else if (clk_en)
+          if (status_wr_strobe)
+              framing_error <= 0;
+          else if (got_new_char && is_framing_error)
+              framing_error <= -1;
+    end
+
+
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          break_detect <= 0;
+      else if (clk_en)
+          if (status_wr_strobe)
+              break_detect <= 0;
+          else if (got_new_char && is_break)
+              break_detect <= -1;
+    end
+
+
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          rx_overrun <= 0;
+      else if (clk_en)
+          if (status_wr_strobe)
+              rx_overrun <= 0;
+          else if (got_new_char && rx_char_ready)
+              rx_overrun <= -1;
+    end
+
+
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          rx_char_ready <= 0;
+      else if (clk_en)
+          if (rx_rd_strobe_onset)
+              rx_char_ready <= 0;
+          else if (got_new_char)
+              rx_char_ready <= -1;
+    end
+
+
+  assign parity_error = 0;
+  //_reg, which is an e_register
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          unxshiftxrxd_shift_regxshift_reg_start_bit_nxx6_out <= 0;
+      else if (clk_en)
+          unxshiftxrxd_shift_regxshift_reg_start_bit_nxx6_out <= unxshiftxrxd_shift_regxshift_reg_start_bit_nxx6_in;
+    end
+
+
+  assign unxshiftxrxd_shift_regxshift_reg_start_bit_nxx6_in = (do_start_rx)? {10{1'b1}} :
+    (sample_enable)? {sync_rxd,
+    unxshiftxrxd_shift_regxshift_reg_start_bit_nxx6_out[9 : 1]} :
+    unxshiftxrxd_shift_regxshift_reg_start_bit_nxx6_out;
+
+  assign rxd_shift_reg = unxshiftxrxd_shift_regxshift_reg_start_bit_nxx6_out;
+  assign shift_reg_start_bit_n = unxshiftxrxd_shift_regxshift_reg_start_bit_nxx6_out[0];
 
 endmodule
 
@@ -240,81 +544,239 @@ endmodule
 // altera message_level Level1 
 // altera message_off 10034 10035 10036 10037 10230 10240 10030 
 
-module system_UART_scfifo_r (
-                              // inputs:
-                               clk,
-                               fifo_clear,
-                               fifo_rd,
-                               rst_n,
-                               t_dat,
-                               wr_rfifo,
+module system_UART_regs (
+                          // inputs:
+                           address,
+                           break_detect,
+                           chipselect,
+                           clk,
+                           clk_en,
+                           framing_error,
+                           parity_error,
+                           read_n,
+                           reset_n,
+                           rx_char_ready,
+                           rx_data,
+                           rx_overrun,
+                           tx_overrun,
+                           tx_ready,
+                           tx_shift_empty,
+                           write_n,
+                           writedata,
 
-                              // outputs:
-                               fifo_EF,
-                               fifo_rdata,
-                               rfifo_full,
-                               rfifo_used
-                            )
+                          // outputs:
+                           baud_divisor,
+                           dataavailable,
+                           do_force_break,
+                           irq,
+                           readdata,
+                           readyfordata,
+                           rx_rd_strobe,
+                           status_wr_strobe,
+                           tx_data,
+                           tx_wr_strobe
+                        )
 ;
 
-  output           fifo_EF;
-  output  [  7: 0] fifo_rdata;
-  output           rfifo_full;
-  output  [  5: 0] rfifo_used;
+  output  [  8: 0] baud_divisor;
+  output           dataavailable;
+  output           do_force_break;
+  output           irq;
+  output  [ 15: 0] readdata;
+  output           readyfordata;
+  output           rx_rd_strobe;
+  output           status_wr_strobe;
+  output  [  7: 0] tx_data;
+  output           tx_wr_strobe;
+  input   [  2: 0] address;
+  input            break_detect;
+  input            chipselect;
   input            clk;
-  input            fifo_clear;
-  input            fifo_rd;
-  input            rst_n;
-  input   [  7: 0] t_dat;
-  input            wr_rfifo;
+  input            clk_en;
+  input            framing_error;
+  input            parity_error;
+  input            read_n;
+  input            reset_n;
+  input            rx_char_ready;
+  input   [  7: 0] rx_data;
+  input            rx_overrun;
+  input            tx_overrun;
+  input            tx_ready;
+  input            tx_shift_empty;
+  input            write_n;
+  input   [ 15: 0] writedata;
 
 
-wire             fifo_EF;
-wire    [  7: 0] fifo_rdata;
-wire             rfifo_full;
-wire    [  5: 0] rfifo_used;
+wire             any_error;
+wire    [  8: 0] baud_divisor;
+reg     [  9: 0] control_reg;
+wire             control_wr_strobe;
+wire             cts_status_bit;
+reg              d1_rx_char_ready;
+reg              d1_tx_ready;
+wire             dataavailable;
+wire             dcts_status_bit;
+reg              delayed_unxtx_readyxx4;
+wire    [  8: 0] divisor_constant;
+wire             do_force_break;
+wire             do_write_char;
+wire             eop_status_bit;
+wire             ie_any_error;
+wire             ie_break_detect;
+wire             ie_framing_error;
+wire             ie_parity_error;
+wire             ie_rx_char_ready;
+wire             ie_rx_overrun;
+wire             ie_tx_overrun;
+wire             ie_tx_ready;
+wire             ie_tx_shift_empty;
+reg              irq;
+wire             qualified_irq;
+reg     [ 15: 0] readdata;
+wire             readyfordata;
+wire             rx_rd_strobe;
+wire    [ 15: 0] selected_read_data;
+wire    [ 12: 0] status_reg;
+wire             status_wr_strobe;
+reg     [  7: 0] tx_data;
+wire             tx_wr_strobe;
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          readdata <= 0;
+      else if (clk_en)
+          readdata <= selected_read_data;
+    end
+
+
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          irq <= 0;
+      else if (clk_en)
+          irq <= qualified_irq;
+    end
+
+
+  assign rx_rd_strobe = chipselect && ~read_n  && (address == 3'd0);
+  assign tx_wr_strobe = chipselect && ~write_n && (address == 3'd1);
+  assign status_wr_strobe = chipselect && ~write_n && (address == 3'd2);
+  assign control_wr_strobe = chipselect && ~write_n && (address == 3'd3);
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          tx_data <= 0;
+      else if (tx_wr_strobe)
+          tx_data <= writedata[7 : 0];
+    end
+
+
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          control_reg <= 0;
+      else if (control_wr_strobe)
+          control_reg <= writedata[9 : 0];
+    end
+
+
+  assign baud_divisor = divisor_constant;
+  assign cts_status_bit = 0;
+  assign dcts_status_bit = 0;
+  assign {do_force_break,
+ie_any_error,
+ie_rx_char_ready,
+ie_tx_ready,
+ie_tx_shift_empty,
+ie_tx_overrun,
+ie_rx_overrun,
+ie_break_detect,
+ie_framing_error,
+ie_parity_error} = control_reg;
+  assign any_error = tx_overrun ||
+    rx_overrun ||
+    parity_error ||
+    framing_error ||
+    break_detect;
+
+  assign status_reg = {eop_status_bit,
+    cts_status_bit,
+    dcts_status_bit,
+    1'b0,
+    any_error,
+    rx_char_ready,
+    tx_ready,
+    tx_shift_empty,
+    tx_overrun,
+    rx_overrun,
+    break_detect,
+    framing_error,
+    parity_error};
+
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          d1_rx_char_ready <= 0;
+      else if (clk_en)
+          d1_rx_char_ready <= rx_char_ready;
+    end
+
+
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          d1_tx_ready <= 0;
+      else if (clk_en)
+          d1_tx_ready <= tx_ready;
+    end
+
+
+  assign dataavailable = d1_rx_char_ready;
+  assign readyfordata = d1_tx_ready;
+  assign eop_status_bit = 1'b0;
+  assign selected_read_data = ({16 {(address == 3'd0)}} & rx_data) |
+    ({16 {(address == 3'd1)}} & tx_data) |
+    ({16 {(address == 3'd2)}} & status_reg) |
+    ({16 {(address == 3'd3)}} & control_reg);
+
+  assign qualified_irq = (ie_any_error      && any_error      ) ||
+    (ie_tx_shift_empty && tx_shift_empty ) ||
+    (ie_tx_overrun     && tx_overrun     ) ||
+    (ie_rx_overrun     && rx_overrun     ) ||
+    (ie_break_detect   && break_detect   ) ||
+    (ie_framing_error  && framing_error  ) ||
+    (ie_parity_error   && parity_error   ) ||
+    (ie_rx_char_ready  && rx_char_ready  ) ||
+    (ie_tx_ready       && tx_ready       );
+
 
 //synthesis translate_off
 //////////////// SIMULATION-ONLY CONTENTS
-  system_UART_sim_scfifo_r the_system_UART_sim_scfifo_r
-    (
-      .clk        (clk),
-      .fifo_EF    (fifo_EF),
-      .fifo_rd    (fifo_rd),
-      .fifo_rdata (fifo_rdata),
-      .rfifo_full (rfifo_full),
-      .rfifo_used (rfifo_used),
-      .rst_n      (rst_n)
-    );
+  //delayed_unxtx_readyxx4, which is an e_register
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          delayed_unxtx_readyxx4 <= 0;
+      else if (clk_en)
+          delayed_unxtx_readyxx4 <= tx_ready;
+    end
 
+
+  assign do_write_char = (tx_ready) & ~(delayed_unxtx_readyxx4);
+  always @(posedge clk)
+    begin
+      if (do_write_char)
+          $write("%c", tx_data);
+    end
+
+
+  assign divisor_constant = 4;
 
 //////////////// END SIMULATION-ONLY CONTENTS
 
 //synthesis translate_on
 //synthesis read_comments_as_HDL on
-//  scfifo rfifo
-//    (
-//      .aclr (fifo_clear),
-//      .clock (clk),
-//      .data (t_dat),
-//      .empty (fifo_EF),
-//      .full (rfifo_full),
-//      .q (fifo_rdata),
-//      .rdreq (fifo_rd),
-//      .usedw (rfifo_used),
-//      .wrreq (wr_rfifo)
-//    );
-//
-//  defparam rfifo.lpm_hint = "RAM_BLOCK_TYPE=AUTO",
-//           rfifo.lpm_numwords = 64,
-//           rfifo.lpm_showahead = "OFF",
-//           rfifo.lpm_type = "scfifo",
-//           rfifo.lpm_width = 8,
-//           rfifo.lpm_widthu = 6,
-//           rfifo.overflow_checking = "OFF",
-//           rfifo.underflow_checking = "OFF",
-//           rfifo.use_eab = "ON";
-//
+//  assign divisor_constant = 434;
 //synthesis read_comments_as_HDL off
 
 endmodule
@@ -330,259 +792,130 @@ endmodule
 
 module system_UART (
                      // inputs:
-                      av_address,
-                      av_chipselect,
-                      av_read_n,
-                      av_write_n,
-                      av_writedata,
+                      address,
+                      begintransfer,
+                      chipselect,
                       clk,
-                      rst_n,
+                      read_n,
+                      reset_n,
+                      rxd,
+                      write_n,
+                      writedata,
 
                      // outputs:
-                      av_irq,
-                      av_readdata,
-                      av_waitrequest,
                       dataavailable,
-                      readyfordata
+                      irq,
+                      readdata,
+                      readyfordata,
+                      txd
                    )
-  /* synthesis ALTERA_ATTRIBUTE = "SUPPRESS_DA_RULE_INTERNAL=\"R101,C106,D101,D103\"" */ ;
+  /* synthesis altera_attribute = "-name SYNCHRONIZER_IDENTIFICATION OFF" */ ;
 
-  output           av_irq;
-  output  [ 31: 0] av_readdata;
-  output           av_waitrequest;
   output           dataavailable;
+  output           irq;
+  output  [ 15: 0] readdata;
   output           readyfordata;
-  input            av_address;
-  input            av_chipselect;
-  input            av_read_n;
-  input            av_write_n;
-  input   [ 31: 0] av_writedata;
+  output           txd;
+  input   [  2: 0] address;
+  input            begintransfer;
+  input            chipselect;
   input            clk;
-  input            rst_n;
+  input            read_n;
+  input            reset_n;
+  input            rxd;
+  input            write_n;
+  input   [ 15: 0] writedata;
 
 
-reg              ac;
-wire             activity;
-wire             av_irq;
-wire    [ 31: 0] av_readdata;
-reg              av_waitrequest;
-reg              dataavailable;
-reg              fifo_AE;
-reg              fifo_AF;
-wire             fifo_EF;
-wire             fifo_FF;
-wire             fifo_clear;
-wire             fifo_rd;
-wire    [  7: 0] fifo_rdata;
-wire    [  7: 0] fifo_wdata;
-reg              fifo_wr;
-reg              ien_AE;
-reg              ien_AF;
-wire             ipen_AE;
-wire             ipen_AF;
-reg              pause_irq;
-wire    [  7: 0] r_dat;
-wire             r_ena;
-reg              r_val;
-wire             rd_wfifo;
-reg              read_0;
-reg              readyfordata;
-wire             rfifo_full;
-wire    [  5: 0] rfifo_used;
-reg              rvalid;
-reg              sim_r_ena;
-reg              sim_t_dat;
-reg              sim_t_ena;
-reg              sim_t_pause;
-wire    [  7: 0] t_dat;
-reg              t_dav;
-wire             t_ena;
-wire             t_pause;
-wire             wfifo_empty;
-wire    [  5: 0] wfifo_used;
-reg              woverflow;
-wire             wr_rfifo;
-  //avalon_jtag_slave, which is an e_avalon_slave
-  assign rd_wfifo = r_ena & ~wfifo_empty;
-  assign wr_rfifo = t_ena & ~rfifo_full;
-  assign fifo_clear = ~rst_n;
-  system_UART_scfifo_w the_system_UART_scfifo_w
+wire    [  8: 0] baud_divisor;
+wire             break_detect;
+wire             clk_en;
+wire             dataavailable;
+wire             do_force_break;
+wire             framing_error;
+wire             irq;
+wire             parity_error;
+wire    [ 15: 0] readdata;
+wire             readyfordata;
+wire             rx_char_ready;
+wire    [  7: 0] rx_data;
+wire             rx_overrun;
+wire             rx_rd_strobe;
+wire             status_wr_strobe;
+wire    [  7: 0] tx_data;
+wire             tx_overrun;
+wire             tx_ready;
+wire             tx_shift_empty;
+wire             tx_wr_strobe;
+wire             txd;
+  assign clk_en = 1;
+  system_UART_tx the_system_UART_tx
     (
-      .clk         (clk),
-      .fifo_FF     (fifo_FF),
-      .fifo_clear  (fifo_clear),
-      .fifo_wdata  (fifo_wdata),
-      .fifo_wr     (fifo_wr),
-      .r_dat       (r_dat),
-      .rd_wfifo    (rd_wfifo),
-      .wfifo_empty (wfifo_empty),
-      .wfifo_used  (wfifo_used)
+      .baud_divisor     (baud_divisor),
+      .begintransfer    (begintransfer),
+      .clk              (clk),
+      .clk_en           (clk_en),
+      .do_force_break   (do_force_break),
+      .reset_n          (reset_n),
+      .status_wr_strobe (status_wr_strobe),
+      .tx_data          (tx_data),
+      .tx_overrun       (tx_overrun),
+      .tx_ready         (tx_ready),
+      .tx_shift_empty   (tx_shift_empty),
+      .tx_wr_strobe     (tx_wr_strobe),
+      .txd              (txd)
     );
 
-  system_UART_scfifo_r the_system_UART_scfifo_r
+  system_UART_rx the_system_UART_rx
     (
-      .clk        (clk),
-      .fifo_EF    (fifo_EF),
-      .fifo_clear (fifo_clear),
-      .fifo_rd    (fifo_rd),
-      .fifo_rdata (fifo_rdata),
-      .rfifo_full (rfifo_full),
-      .rfifo_used (rfifo_used),
-      .rst_n      (rst_n),
-      .t_dat      (t_dat),
-      .wr_rfifo   (wr_rfifo)
+      .baud_divisor     (baud_divisor),
+      .begintransfer    (begintransfer),
+      .break_detect     (break_detect),
+      .clk              (clk),
+      .clk_en           (clk_en),
+      .framing_error    (framing_error),
+      .parity_error     (parity_error),
+      .reset_n          (reset_n),
+      .rx_char_ready    (rx_char_ready),
+      .rx_data          (rx_data),
+      .rx_overrun       (rx_overrun),
+      .rx_rd_strobe     (rx_rd_strobe),
+      .rxd              (rxd),
+      .status_wr_strobe (status_wr_strobe)
     );
 
-  assign ipen_AE = ien_AE & fifo_AE;
-  assign ipen_AF = ien_AF & (pause_irq | fifo_AF);
-  assign av_irq = ipen_AE | ipen_AF;
-  assign activity = t_pause | t_ena;
-  always @(posedge clk or negedge rst_n)
-    begin
-      if (rst_n == 0)
-          pause_irq <= 1'b0;
-      else // only if fifo is not empty...
-      if (t_pause & ~fifo_EF)
-          pause_irq <= 1'b1;
-      else if (read_0)
-          pause_irq <= 1'b0;
-    end
+  system_UART_regs the_system_UART_regs
+    (
+      .address          (address),
+      .baud_divisor     (baud_divisor),
+      .break_detect     (break_detect),
+      .chipselect       (chipselect),
+      .clk              (clk),
+      .clk_en           (clk_en),
+      .dataavailable    (dataavailable),
+      .do_force_break   (do_force_break),
+      .framing_error    (framing_error),
+      .irq              (irq),
+      .parity_error     (parity_error),
+      .read_n           (read_n),
+      .readdata         (readdata),
+      .readyfordata     (readyfordata),
+      .reset_n          (reset_n),
+      .rx_char_ready    (rx_char_ready),
+      .rx_data          (rx_data),
+      .rx_overrun       (rx_overrun),
+      .rx_rd_strobe     (rx_rd_strobe),
+      .status_wr_strobe (status_wr_strobe),
+      .tx_data          (tx_data),
+      .tx_overrun       (tx_overrun),
+      .tx_ready         (tx_ready),
+      .tx_shift_empty   (tx_shift_empty),
+      .tx_wr_strobe     (tx_wr_strobe),
+      .write_n          (write_n),
+      .writedata        (writedata)
+    );
 
-
-  always @(posedge clk or negedge rst_n)
-    begin
-      if (rst_n == 0)
-        begin
-          r_val <= 1'b0;
-          t_dav <= 1'b1;
-        end
-      else 
-        begin
-          r_val <= r_ena & ~wfifo_empty;
-          t_dav <= ~rfifo_full;
-        end
-    end
-
-
-  always @(posedge clk or negedge rst_n)
-    begin
-      if (rst_n == 0)
-        begin
-          fifo_AE <= 1'b0;
-          fifo_AF <= 1'b0;
-          fifo_wr <= 1'b0;
-          rvalid <= 1'b0;
-          read_0 <= 1'b0;
-          ien_AE <= 1'b0;
-          ien_AF <= 1'b0;
-          ac <= 1'b0;
-          woverflow <= 1'b0;
-          av_waitrequest <= 1'b1;
-        end
-      else 
-        begin
-          fifo_AE <= {fifo_FF,wfifo_used} <= 8;
-          fifo_AF <= (7'h40 - {rfifo_full,rfifo_used}) <= 8;
-          fifo_wr <= 1'b0;
-          read_0 <= 1'b0;
-          av_waitrequest <= ~(av_chipselect & (~av_write_n | ~av_read_n) & av_waitrequest);
-          if (activity)
-              ac <= 1'b1;
-          // write
-          if (av_chipselect & ~av_write_n & av_waitrequest)
-              // addr 1 is control; addr 0 is data
-              if (av_address)
-                begin
-                  ien_AF <= av_writedata[0];
-                  ien_AE <= av_writedata[1];
-                  if (av_writedata[10] & ~activity)
-                      ac <= 1'b0;
-                end
-              else 
-                begin
-                  fifo_wr <= ~fifo_FF;
-                  woverflow <= fifo_FF;
-                end
-          // read
-          if (av_chipselect & ~av_read_n & av_waitrequest)
-            begin
-              // addr 1 is interrupt; addr 0 is data
-              if (~av_address)
-                  rvalid <= ~fifo_EF;
-              read_0 <= ~av_address;
-            end
-        end
-    end
-
-
-  assign fifo_wdata = av_writedata[7 : 0];
-  assign fifo_rd = (av_chipselect & ~av_read_n & av_waitrequest & ~av_address) ? ~fifo_EF : 1'b0;
-  assign av_readdata = read_0 ? { {9{1'b0}},rfifo_full,rfifo_used,rvalid,woverflow,~fifo_FF,~fifo_EF,1'b0,ac,ipen_AE,ipen_AF,fifo_rdata } : { {9{1'b0}},(7'h40 - {fifo_FF,wfifo_used}),rvalid,woverflow,~fifo_FF,~fifo_EF,1'b0,ac,ipen_AE,ipen_AF,{6{1'b0}},ien_AE,ien_AF };
-  always @(posedge clk or negedge rst_n)
-    begin
-      if (rst_n == 0)
-          readyfordata <= 0;
-      else 
-        readyfordata <= ~fifo_FF;
-    end
-
-
-
-//synthesis translate_off
-//////////////// SIMULATION-ONLY CONTENTS
-  // Tie off Atlantic Interface signals not used for simulation
-  always @(posedge clk)
-    begin
-      sim_t_pause <= 1'b0;
-      sim_t_ena <= 1'b0;
-      sim_t_dat <= t_dav ? r_dat : {8{r_val}};
-      sim_r_ena <= 1'b0;
-    end
-
-
-  assign r_ena = sim_r_ena;
-  assign t_ena = sim_t_ena;
-  assign t_dat = sim_t_dat;
-  assign t_pause = sim_t_pause;
-  always @(fifo_EF)
-    begin
-      dataavailable = ~fifo_EF;
-    end
-
-
-
-//////////////// END SIMULATION-ONLY CONTENTS
-
-//synthesis translate_on
-//synthesis read_comments_as_HDL on
-//  alt_jtag_atlantic system_UART_alt_jtag_atlantic
-//    (
-//      .clk (clk),
-//      .r_dat (r_dat),
-//      .r_ena (r_ena),
-//      .r_val (r_val),
-//      .rst_n (rst_n),
-//      .t_dat (t_dat),
-//      .t_dav (t_dav),
-//      .t_ena (t_ena),
-//      .t_pause (t_pause)
-//    );
-//
-//  defparam system_UART_alt_jtag_atlantic.INSTANCE_ID = 0,
-//           system_UART_alt_jtag_atlantic.LOG2_RXFIFO_DEPTH = 6,
-//           system_UART_alt_jtag_atlantic.LOG2_TXFIFO_DEPTH = 6,
-//           system_UART_alt_jtag_atlantic.SLD_AUTO_INSTANCE_INDEX = "YES";
-//
-//  always @(posedge clk or negedge rst_n)
-//    begin
-//      if (rst_n == 0)
-//          dataavailable <= 0;
-//      else 
-//        dataavailable <= ~fifo_EF;
-//    end
-//
-//
-//synthesis read_comments_as_HDL off
+  //s1, which is an e_avalon_slave
 
 endmodule
 

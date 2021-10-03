@@ -1783,6 +1783,27 @@
 						<entry kind="macro" name="__hal__" value=""/>
 						<entry kind="macro" name="exit(a)" value="_exit(a)"/>
 					</resource>
+					<resource project-relative-path="drivers/src/altera_avalon_uart_fd.c">
+						<entry kind="includePath" name="/${ProjName}/HAL/inc">
+							<flag value="VALUE_WORKSPACE_PATH"/>
+						</entry>
+						<entry kind="includePath" name="/${ProjName}/">
+							<flag value="VALUE_WORKSPACE_PATH"/>
+						</entry>
+						<entry kind="includePath" name="/${ProjName}/drivers/inc">
+							<flag value="VALUE_WORKSPACE_PATH"/>
+						</entry>
+						<entry kind="macro" name="ALT_NO_CLEAN_EXIT" value=""/>
+						<entry kind="macro" name="ALT_NO_C_PLUS_PLUS" value=""/>
+						<entry kind="macro" name="ALT_NO_EXIT" value=""/>
+						<entry kind="macro" name="ALT_NO_INSTRUCTION_EMULATION" value=""/>
+						<entry kind="macro" name="ALT_SINGLE_THREADED" value=""/>
+						<entry kind="macro" name="ALT_USE_DIRECT_DRIVERS" value=""/>
+						<entry kind="macro" name="ALT_USE_SMALL_DRIVERS" value=""/>
+						<entry kind="macro" name="SMALL_C_LIB" value=""/>
+						<entry kind="macro" name="__hal__" value=""/>
+						<entry kind="macro" name="exit(a)" value="_exit(a)"/>
+					</resource>
 					<resource project-relative-path="HAL/src/alt_wait.c">
 						<entry kind="includePath" name="/${ProjName}/HAL/inc">
 							<flag value="VALUE_WORKSPACE_PATH"/>
@@ -2728,6 +2749,27 @@
 						<entry kind="macro" name="__hal__" value=""/>
 						<entry kind="macro" name="exit(a)" value="_exit(a)"/>
 					</resource>
+					<resource project-relative-path="drivers/src/altera_avalon_uart_write.c">
+						<entry kind="includePath" name="/${ProjName}/HAL/inc">
+							<flag value="VALUE_WORKSPACE_PATH"/>
+						</entry>
+						<entry kind="includePath" name="/${ProjName}/">
+							<flag value="VALUE_WORKSPACE_PATH"/>
+						</entry>
+						<entry kind="includePath" name="/${ProjName}/drivers/inc">
+							<flag value="VALUE_WORKSPACE_PATH"/>
+						</entry>
+						<entry kind="macro" name="ALT_NO_CLEAN_EXIT" value=""/>
+						<entry kind="macro" name="ALT_NO_C_PLUS_PLUS" value=""/>
+						<entry kind="macro" name="ALT_NO_EXIT" value=""/>
+						<entry kind="macro" name="ALT_NO_INSTRUCTION_EMULATION" value=""/>
+						<entry kind="macro" name="ALT_SINGLE_THREADED" value=""/>
+						<entry kind="macro" name="ALT_USE_DIRECT_DRIVERS" value=""/>
+						<entry kind="macro" name="ALT_USE_SMALL_DRIVERS" value=""/>
+						<entry kind="macro" name="SMALL_C_LIB" value=""/>
+						<entry kind="macro" name="__hal__" value=""/>
+						<entry kind="macro" name="exit(a)" value="_exit(a)"/>
+					</resource>
 					<resource project-relative-path="HAL/src/alt_dcache_flush.c">
 						<entry kind="includePath" name="/${ProjName}/HAL/inc">
 							<flag value="VALUE_WORKSPACE_PATH"/>
@@ -2981,6 +3023,27 @@
 						<entry kind="macro" name="exit(a)" value="_exit(a)"/>
 					</resource>
 					<resource project-relative-path="HAL/src/alt_instruction_exception_register.c">
+						<entry kind="includePath" name="/${ProjName}/HAL/inc">
+							<flag value="VALUE_WORKSPACE_PATH"/>
+						</entry>
+						<entry kind="includePath" name="/${ProjName}/">
+							<flag value="VALUE_WORKSPACE_PATH"/>
+						</entry>
+						<entry kind="includePath" name="/${ProjName}/drivers/inc">
+							<flag value="VALUE_WORKSPACE_PATH"/>
+						</entry>
+						<entry kind="macro" name="ALT_NO_CLEAN_EXIT" value=""/>
+						<entry kind="macro" name="ALT_NO_C_PLUS_PLUS" value=""/>
+						<entry kind="macro" name="ALT_NO_EXIT" value=""/>
+						<entry kind="macro" name="ALT_NO_INSTRUCTION_EMULATION" value=""/>
+						<entry kind="macro" name="ALT_SINGLE_THREADED" value=""/>
+						<entry kind="macro" name="ALT_USE_DIRECT_DRIVERS" value=""/>
+						<entry kind="macro" name="ALT_USE_SMALL_DRIVERS" value=""/>
+						<entry kind="macro" name="SMALL_C_LIB" value=""/>
+						<entry kind="macro" name="__hal__" value=""/>
+						<entry kind="macro" name="exit(a)" value="_exit(a)"/>
+					</resource>
+					<resource project-relative-path="drivers/src/altera_avalon_uart_init.c">
 						<entry kind="includePath" name="/${ProjName}/HAL/inc">
 							<flag value="VALUE_WORKSPACE_PATH"/>
 						</entry>
@@ -3316,6 +3379,27 @@
 						<entry kind="macro" name="__hal__" value=""/>
 						<entry kind="macro" name="exit(a)" value="_exit(a)"/>
 					</resource>
+					<resource project-relative-path="drivers/src/altera_avalon_uart_read.c">
+						<entry kind="includePath" name="/${ProjName}/HAL/inc">
+							<flag value="VALUE_WORKSPACE_PATH"/>
+						</entry>
+						<entry kind="includePath" name="/${ProjName}/">
+							<flag value="VALUE_WORKSPACE_PATH"/>
+						</entry>
+						<entry kind="includePath" name="/${ProjName}/drivers/inc">
+							<flag value="VALUE_WORKSPACE_PATH"/>
+						</entry>
+						<entry kind="macro" name="ALT_NO_CLEAN_EXIT" value=""/>
+						<entry kind="macro" name="ALT_NO_C_PLUS_PLUS" value=""/>
+						<entry kind="macro" name="ALT_NO_EXIT" value=""/>
+						<entry kind="macro" name="ALT_NO_INSTRUCTION_EMULATION" value=""/>
+						<entry kind="macro" name="ALT_SINGLE_THREADED" value=""/>
+						<entry kind="macro" name="ALT_USE_DIRECT_DRIVERS" value=""/>
+						<entry kind="macro" name="ALT_USE_SMALL_DRIVERS" value=""/>
+						<entry kind="macro" name="SMALL_C_LIB" value=""/>
+						<entry kind="macro" name="__hal__" value=""/>
+						<entry kind="macro" name="exit(a)" value="_exit(a)"/>
+					</resource>
 					<resource project-relative-path="HAL/src/alt_putstr.c">
 						<entry kind="includePath" name="/${ProjName}/HAL/inc">
 							<flag value="VALUE_WORKSPACE_PATH"/>
@@ -3464,6 +3548,27 @@
 						<entry kind="macro" name="exit(a)" value="_exit(a)"/>
 					</resource>
 					<resource project-relative-path="HAL/src/alt_irq_vars.c">
+						<entry kind="includePath" name="/${ProjName}/HAL/inc">
+							<flag value="VALUE_WORKSPACE_PATH"/>
+						</entry>
+						<entry kind="includePath" name="/${ProjName}/">
+							<flag value="VALUE_WORKSPACE_PATH"/>
+						</entry>
+						<entry kind="includePath" name="/${ProjName}/drivers/inc">
+							<flag value="VALUE_WORKSPACE_PATH"/>
+						</entry>
+						<entry kind="macro" name="ALT_NO_CLEAN_EXIT" value=""/>
+						<entry kind="macro" name="ALT_NO_C_PLUS_PLUS" value=""/>
+						<entry kind="macro" name="ALT_NO_EXIT" value=""/>
+						<entry kind="macro" name="ALT_NO_INSTRUCTION_EMULATION" value=""/>
+						<entry kind="macro" name="ALT_SINGLE_THREADED" value=""/>
+						<entry kind="macro" name="ALT_USE_DIRECT_DRIVERS" value=""/>
+						<entry kind="macro" name="ALT_USE_SMALL_DRIVERS" value=""/>
+						<entry kind="macro" name="SMALL_C_LIB" value=""/>
+						<entry kind="macro" name="__hal__" value=""/>
+						<entry kind="macro" name="exit(a)" value="_exit(a)"/>
+					</resource>
+					<resource project-relative-path="drivers/src/altera_avalon_uart_ioctl.c">
 						<entry kind="includePath" name="/${ProjName}/HAL/inc">
 							<flag value="VALUE_WORKSPACE_PATH"/>
 						</entry>

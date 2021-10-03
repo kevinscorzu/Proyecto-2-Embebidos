@@ -11,7 +11,9 @@ module system (
 	seg7m0_export,
 	seg7m1_export,
 	seg7s0_export,
-	seg7s1_export);	
+	seg7s1_export,
+	uart_rxd,
+	uart_txd);	
 
 	input		btinc_export;
 	input		btmode_export;
@@ -25,4 +27,6 @@ module system (
 	output	[6:0]	seg7m1_export;
 	output	[6:0]	seg7s0_export;
 	output	[6:0]	seg7s1_export;
+	input		uart_rxd;
+	output		uart_txd;
 endmodule

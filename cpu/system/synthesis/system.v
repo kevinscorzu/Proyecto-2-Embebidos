@@ -15,106 +15,108 @@ module system (
 		output wire [6:0] seg7m0_export, // seg7m0.export
 		output wire [6:0] seg7m1_export, // seg7m1.export
 		output wire [6:0] seg7s0_export, // seg7s0.export
-		output wire [6:0] seg7s1_export  // seg7s1.export
+		output wire [6:0] seg7s1_export, // seg7s1.export
+		input  wire       uart_rxd,      //   uart.rxd
+		output wire       uart_txd       //       .txd
 	);
 
-	wire  [31:0] cpu_data_master_readdata;                             // mm_interconnect_0:CPU_data_master_readdata -> CPU:d_readdata
-	wire         cpu_data_master_waitrequest;                          // mm_interconnect_0:CPU_data_master_waitrequest -> CPU:d_waitrequest
-	wire         cpu_data_master_debugaccess;                          // CPU:debug_mem_slave_debugaccess_to_roms -> mm_interconnect_0:CPU_data_master_debugaccess
-	wire  [14:0] cpu_data_master_address;                              // CPU:d_address -> mm_interconnect_0:CPU_data_master_address
-	wire   [3:0] cpu_data_master_byteenable;                           // CPU:d_byteenable -> mm_interconnect_0:CPU_data_master_byteenable
-	wire         cpu_data_master_read;                                 // CPU:d_read -> mm_interconnect_0:CPU_data_master_read
-	wire         cpu_data_master_write;                                // CPU:d_write -> mm_interconnect_0:CPU_data_master_write
-	wire  [31:0] cpu_data_master_writedata;                            // CPU:d_writedata -> mm_interconnect_0:CPU_data_master_writedata
-	wire  [31:0] cpu_instruction_master_readdata;                      // mm_interconnect_0:CPU_instruction_master_readdata -> CPU:i_readdata
-	wire         cpu_instruction_master_waitrequest;                   // mm_interconnect_0:CPU_instruction_master_waitrequest -> CPU:i_waitrequest
-	wire  [14:0] cpu_instruction_master_address;                       // CPU:i_address -> mm_interconnect_0:CPU_instruction_master_address
-	wire         cpu_instruction_master_read;                          // CPU:i_read -> mm_interconnect_0:CPU_instruction_master_read
-	wire         mm_interconnect_0_uart_avalon_jtag_slave_chipselect;  // mm_interconnect_0:UART_avalon_jtag_slave_chipselect -> UART:av_chipselect
-	wire  [31:0] mm_interconnect_0_uart_avalon_jtag_slave_readdata;    // UART:av_readdata -> mm_interconnect_0:UART_avalon_jtag_slave_readdata
-	wire         mm_interconnect_0_uart_avalon_jtag_slave_waitrequest; // UART:av_waitrequest -> mm_interconnect_0:UART_avalon_jtag_slave_waitrequest
-	wire   [0:0] mm_interconnect_0_uart_avalon_jtag_slave_address;     // mm_interconnect_0:UART_avalon_jtag_slave_address -> UART:av_address
-	wire         mm_interconnect_0_uart_avalon_jtag_slave_read;        // mm_interconnect_0:UART_avalon_jtag_slave_read -> UART:av_read_n
-	wire         mm_interconnect_0_uart_avalon_jtag_slave_write;       // mm_interconnect_0:UART_avalon_jtag_slave_write -> UART:av_write_n
-	wire  [31:0] mm_interconnect_0_uart_avalon_jtag_slave_writedata;   // mm_interconnect_0:UART_avalon_jtag_slave_writedata -> UART:av_writedata
-	wire  [31:0] mm_interconnect_0_cpu_debug_mem_slave_readdata;       // CPU:debug_mem_slave_readdata -> mm_interconnect_0:CPU_debug_mem_slave_readdata
-	wire         mm_interconnect_0_cpu_debug_mem_slave_waitrequest;    // CPU:debug_mem_slave_waitrequest -> mm_interconnect_0:CPU_debug_mem_slave_waitrequest
-	wire         mm_interconnect_0_cpu_debug_mem_slave_debugaccess;    // mm_interconnect_0:CPU_debug_mem_slave_debugaccess -> CPU:debug_mem_slave_debugaccess
-	wire   [8:0] mm_interconnect_0_cpu_debug_mem_slave_address;        // mm_interconnect_0:CPU_debug_mem_slave_address -> CPU:debug_mem_slave_address
-	wire         mm_interconnect_0_cpu_debug_mem_slave_read;           // mm_interconnect_0:CPU_debug_mem_slave_read -> CPU:debug_mem_slave_read
-	wire   [3:0] mm_interconnect_0_cpu_debug_mem_slave_byteenable;     // mm_interconnect_0:CPU_debug_mem_slave_byteenable -> CPU:debug_mem_slave_byteenable
-	wire         mm_interconnect_0_cpu_debug_mem_slave_write;          // mm_interconnect_0:CPU_debug_mem_slave_write -> CPU:debug_mem_slave_write
-	wire  [31:0] mm_interconnect_0_cpu_debug_mem_slave_writedata;      // mm_interconnect_0:CPU_debug_mem_slave_writedata -> CPU:debug_mem_slave_writedata
-	wire         mm_interconnect_0_ram_s1_chipselect;                  // mm_interconnect_0:RAM_s1_chipselect -> RAM:chipselect
-	wire  [31:0] mm_interconnect_0_ram_s1_readdata;                    // RAM:readdata -> mm_interconnect_0:RAM_s1_readdata
-	wire  [10:0] mm_interconnect_0_ram_s1_address;                     // mm_interconnect_0:RAM_s1_address -> RAM:address
-	wire   [3:0] mm_interconnect_0_ram_s1_byteenable;                  // mm_interconnect_0:RAM_s1_byteenable -> RAM:byteenable
-	wire         mm_interconnect_0_ram_s1_write;                       // mm_interconnect_0:RAM_s1_write -> RAM:write
-	wire  [31:0] mm_interconnect_0_ram_s1_writedata;                   // mm_interconnect_0:RAM_s1_writedata -> RAM:writedata
-	wire         mm_interconnect_0_ram_s1_clken;                       // mm_interconnect_0:RAM_s1_clken -> RAM:clken
-	wire         mm_interconnect_0_seg7_s0_s1_chipselect;              // mm_interconnect_0:SEG7_S0_s1_chipselect -> SEG7_S0:chipselect
-	wire  [31:0] mm_interconnect_0_seg7_s0_s1_readdata;                // SEG7_S0:readdata -> mm_interconnect_0:SEG7_S0_s1_readdata
-	wire   [1:0] mm_interconnect_0_seg7_s0_s1_address;                 // mm_interconnect_0:SEG7_S0_s1_address -> SEG7_S0:address
-	wire         mm_interconnect_0_seg7_s0_s1_write;                   // mm_interconnect_0:SEG7_S0_s1_write -> SEG7_S0:write_n
-	wire  [31:0] mm_interconnect_0_seg7_s0_s1_writedata;               // mm_interconnect_0:SEG7_S0_s1_writedata -> SEG7_S0:writedata
-	wire         mm_interconnect_0_timer_s1_chipselect;                // mm_interconnect_0:TIMER_s1_chipselect -> TIMER:chipselect
-	wire  [15:0] mm_interconnect_0_timer_s1_readdata;                  // TIMER:readdata -> mm_interconnect_0:TIMER_s1_readdata
-	wire   [2:0] mm_interconnect_0_timer_s1_address;                   // mm_interconnect_0:TIMER_s1_address -> TIMER:address
-	wire         mm_interconnect_0_timer_s1_write;                     // mm_interconnect_0:TIMER_s1_write -> TIMER:write_n
-	wire  [15:0] mm_interconnect_0_timer_s1_writedata;                 // mm_interconnect_0:TIMER_s1_writedata -> TIMER:writedata
-	wire         mm_interconnect_0_seg7_s1_s1_chipselect;              // mm_interconnect_0:SEG7_S1_s1_chipselect -> SEG7_S1:chipselect
-	wire  [31:0] mm_interconnect_0_seg7_s1_s1_readdata;                // SEG7_S1:readdata -> mm_interconnect_0:SEG7_S1_s1_readdata
-	wire   [1:0] mm_interconnect_0_seg7_s1_s1_address;                 // mm_interconnect_0:SEG7_S1_s1_address -> SEG7_S1:address
-	wire         mm_interconnect_0_seg7_s1_s1_write;                   // mm_interconnect_0:SEG7_S1_s1_write -> SEG7_S1:write_n
-	wire  [31:0] mm_interconnect_0_seg7_s1_s1_writedata;               // mm_interconnect_0:SEG7_S1_s1_writedata -> SEG7_S1:writedata
-	wire         mm_interconnect_0_seg7_m0_s1_chipselect;              // mm_interconnect_0:SEG7_M0_s1_chipselect -> SEG7_M0:chipselect
-	wire  [31:0] mm_interconnect_0_seg7_m0_s1_readdata;                // SEG7_M0:readdata -> mm_interconnect_0:SEG7_M0_s1_readdata
-	wire   [1:0] mm_interconnect_0_seg7_m0_s1_address;                 // mm_interconnect_0:SEG7_M0_s1_address -> SEG7_M0:address
-	wire         mm_interconnect_0_seg7_m0_s1_write;                   // mm_interconnect_0:SEG7_M0_s1_write -> SEG7_M0:write_n
-	wire  [31:0] mm_interconnect_0_seg7_m0_s1_writedata;               // mm_interconnect_0:SEG7_M0_s1_writedata -> SEG7_M0:writedata
-	wire         mm_interconnect_0_seg7_m1_s1_chipselect;              // mm_interconnect_0:SEG7_M1_s1_chipselect -> SEG7_M1:chipselect
-	wire  [31:0] mm_interconnect_0_seg7_m1_s1_readdata;                // SEG7_M1:readdata -> mm_interconnect_0:SEG7_M1_s1_readdata
-	wire   [1:0] mm_interconnect_0_seg7_m1_s1_address;                 // mm_interconnect_0:SEG7_M1_s1_address -> SEG7_M1:address
-	wire         mm_interconnect_0_seg7_m1_s1_write;                   // mm_interconnect_0:SEG7_M1_s1_write -> SEG7_M1:write_n
-	wire  [31:0] mm_interconnect_0_seg7_m1_s1_writedata;               // mm_interconnect_0:SEG7_M1_s1_writedata -> SEG7_M1:writedata
-	wire         mm_interconnect_0_seg7_h0_s1_chipselect;              // mm_interconnect_0:SEG7_H0_s1_chipselect -> SEG7_H0:chipselect
-	wire  [31:0] mm_interconnect_0_seg7_h0_s1_readdata;                // SEG7_H0:readdata -> mm_interconnect_0:SEG7_H0_s1_readdata
-	wire   [1:0] mm_interconnect_0_seg7_h0_s1_address;                 // mm_interconnect_0:SEG7_H0_s1_address -> SEG7_H0:address
-	wire         mm_interconnect_0_seg7_h0_s1_write;                   // mm_interconnect_0:SEG7_H0_s1_write -> SEG7_H0:write_n
-	wire  [31:0] mm_interconnect_0_seg7_h0_s1_writedata;               // mm_interconnect_0:SEG7_H0_s1_writedata -> SEG7_H0:writedata
-	wire         mm_interconnect_0_seg7_h1_s1_chipselect;              // mm_interconnect_0:SEG7_H1_s1_chipselect -> SEG7_H1:chipselect
-	wire  [31:0] mm_interconnect_0_seg7_h1_s1_readdata;                // SEG7_H1:readdata -> mm_interconnect_0:SEG7_H1_s1_readdata
-	wire   [1:0] mm_interconnect_0_seg7_h1_s1_address;                 // mm_interconnect_0:SEG7_H1_s1_address -> SEG7_H1:address
-	wire         mm_interconnect_0_seg7_h1_s1_write;                   // mm_interconnect_0:SEG7_H1_s1_write -> SEG7_H1:write_n
-	wire  [31:0] mm_interconnect_0_seg7_h1_s1_writedata;               // mm_interconnect_0:SEG7_H1_s1_writedata -> SEG7_H1:writedata
-	wire         mm_interconnect_0_leds_s1_chipselect;                 // mm_interconnect_0:LEDS_s1_chipselect -> LEDS:chipselect
-	wire  [31:0] mm_interconnect_0_leds_s1_readdata;                   // LEDS:readdata -> mm_interconnect_0:LEDS_s1_readdata
-	wire   [1:0] mm_interconnect_0_leds_s1_address;                    // mm_interconnect_0:LEDS_s1_address -> LEDS:address
-	wire         mm_interconnect_0_leds_s1_write;                      // mm_interconnect_0:LEDS_s1_write -> LEDS:write_n
-	wire  [31:0] mm_interconnect_0_leds_s1_writedata;                  // mm_interconnect_0:LEDS_s1_writedata -> LEDS:writedata
-	wire         mm_interconnect_0_bt_mode_s1_chipselect;              // mm_interconnect_0:BT_MODE_s1_chipselect -> BT_MODE:chipselect
-	wire  [31:0] mm_interconnect_0_bt_mode_s1_readdata;                // BT_MODE:readdata -> mm_interconnect_0:BT_MODE_s1_readdata
-	wire   [1:0] mm_interconnect_0_bt_mode_s1_address;                 // mm_interconnect_0:BT_MODE_s1_address -> BT_MODE:address
-	wire         mm_interconnect_0_bt_mode_s1_write;                   // mm_interconnect_0:BT_MODE_s1_write -> BT_MODE:write_n
-	wire  [31:0] mm_interconnect_0_bt_mode_s1_writedata;               // mm_interconnect_0:BT_MODE_s1_writedata -> BT_MODE:writedata
-	wire         mm_interconnect_0_bt_sel_s1_chipselect;               // mm_interconnect_0:BT_SEL_s1_chipselect -> BT_SEL:chipselect
-	wire  [31:0] mm_interconnect_0_bt_sel_s1_readdata;                 // BT_SEL:readdata -> mm_interconnect_0:BT_SEL_s1_readdata
-	wire   [1:0] mm_interconnect_0_bt_sel_s1_address;                  // mm_interconnect_0:BT_SEL_s1_address -> BT_SEL:address
-	wire         mm_interconnect_0_bt_sel_s1_write;                    // mm_interconnect_0:BT_SEL_s1_write -> BT_SEL:write_n
-	wire  [31:0] mm_interconnect_0_bt_sel_s1_writedata;                // mm_interconnect_0:BT_SEL_s1_writedata -> BT_SEL:writedata
-	wire         mm_interconnect_0_bt_inc_s1_chipselect;               // mm_interconnect_0:BT_INC_s1_chipselect -> BT_INC:chipselect
-	wire  [31:0] mm_interconnect_0_bt_inc_s1_readdata;                 // BT_INC:readdata -> mm_interconnect_0:BT_INC_s1_readdata
-	wire   [1:0] mm_interconnect_0_bt_inc_s1_address;                  // mm_interconnect_0:BT_INC_s1_address -> BT_INC:address
-	wire         mm_interconnect_0_bt_inc_s1_write;                    // mm_interconnect_0:BT_INC_s1_write -> BT_INC:write_n
-	wire  [31:0] mm_interconnect_0_bt_inc_s1_writedata;                // mm_interconnect_0:BT_INC_s1_writedata -> BT_INC:writedata
-	wire         irq_mapper_receiver0_irq;                             // UART:av_irq -> irq_mapper:receiver0_irq
-	wire         irq_mapper_receiver1_irq;                             // TIMER:irq -> irq_mapper:receiver1_irq
-	wire         irq_mapper_receiver2_irq;                             // BT_MODE:irq -> irq_mapper:receiver2_irq
-	wire         irq_mapper_receiver3_irq;                             // BT_SEL:irq -> irq_mapper:receiver3_irq
-	wire         irq_mapper_receiver4_irq;                             // BT_INC:irq -> irq_mapper:receiver4_irq
-	wire  [31:0] cpu_irq_irq;                                          // irq_mapper:sender_irq -> CPU:irq
-	wire         rst_controller_reset_out_reset;                       // rst_controller:reset_out -> [BT_INC:reset_n, BT_MODE:reset_n, BT_SEL:reset_n, CPU:reset_n, LEDS:reset_n, RAM:reset, SEG7_H0:reset_n, SEG7_H1:reset_n, SEG7_M0:reset_n, SEG7_M1:reset_n, SEG7_S0:reset_n, SEG7_S1:reset_n, TIMER:reset_n, UART:rst_n, irq_mapper:reset, mm_interconnect_0:CPU_reset_reset_bridge_in_reset_reset, rst_translator:in_reset]
-	wire         rst_controller_reset_out_reset_req;                   // rst_controller:reset_req -> [CPU:reset_req, RAM:reset_req, rst_translator:reset_req_in]
+	wire  [31:0] cpu_data_master_readdata;                          // mm_interconnect_0:CPU_data_master_readdata -> CPU:d_readdata
+	wire         cpu_data_master_waitrequest;                       // mm_interconnect_0:CPU_data_master_waitrequest -> CPU:d_waitrequest
+	wire         cpu_data_master_debugaccess;                       // CPU:debug_mem_slave_debugaccess_to_roms -> mm_interconnect_0:CPU_data_master_debugaccess
+	wire  [14:0] cpu_data_master_address;                           // CPU:d_address -> mm_interconnect_0:CPU_data_master_address
+	wire   [3:0] cpu_data_master_byteenable;                        // CPU:d_byteenable -> mm_interconnect_0:CPU_data_master_byteenable
+	wire         cpu_data_master_read;                              // CPU:d_read -> mm_interconnect_0:CPU_data_master_read
+	wire         cpu_data_master_write;                             // CPU:d_write -> mm_interconnect_0:CPU_data_master_write
+	wire  [31:0] cpu_data_master_writedata;                         // CPU:d_writedata -> mm_interconnect_0:CPU_data_master_writedata
+	wire  [31:0] cpu_instruction_master_readdata;                   // mm_interconnect_0:CPU_instruction_master_readdata -> CPU:i_readdata
+	wire         cpu_instruction_master_waitrequest;                // mm_interconnect_0:CPU_instruction_master_waitrequest -> CPU:i_waitrequest
+	wire  [14:0] cpu_instruction_master_address;                    // CPU:i_address -> mm_interconnect_0:CPU_instruction_master_address
+	wire         cpu_instruction_master_read;                       // CPU:i_read -> mm_interconnect_0:CPU_instruction_master_read
+	wire  [31:0] mm_interconnect_0_cpu_debug_mem_slave_readdata;    // CPU:debug_mem_slave_readdata -> mm_interconnect_0:CPU_debug_mem_slave_readdata
+	wire         mm_interconnect_0_cpu_debug_mem_slave_waitrequest; // CPU:debug_mem_slave_waitrequest -> mm_interconnect_0:CPU_debug_mem_slave_waitrequest
+	wire         mm_interconnect_0_cpu_debug_mem_slave_debugaccess; // mm_interconnect_0:CPU_debug_mem_slave_debugaccess -> CPU:debug_mem_slave_debugaccess
+	wire   [8:0] mm_interconnect_0_cpu_debug_mem_slave_address;     // mm_interconnect_0:CPU_debug_mem_slave_address -> CPU:debug_mem_slave_address
+	wire         mm_interconnect_0_cpu_debug_mem_slave_read;        // mm_interconnect_0:CPU_debug_mem_slave_read -> CPU:debug_mem_slave_read
+	wire   [3:0] mm_interconnect_0_cpu_debug_mem_slave_byteenable;  // mm_interconnect_0:CPU_debug_mem_slave_byteenable -> CPU:debug_mem_slave_byteenable
+	wire         mm_interconnect_0_cpu_debug_mem_slave_write;       // mm_interconnect_0:CPU_debug_mem_slave_write -> CPU:debug_mem_slave_write
+	wire  [31:0] mm_interconnect_0_cpu_debug_mem_slave_writedata;   // mm_interconnect_0:CPU_debug_mem_slave_writedata -> CPU:debug_mem_slave_writedata
+	wire         mm_interconnect_0_ram_s1_chipselect;               // mm_interconnect_0:RAM_s1_chipselect -> RAM:chipselect
+	wire  [31:0] mm_interconnect_0_ram_s1_readdata;                 // RAM:readdata -> mm_interconnect_0:RAM_s1_readdata
+	wire  [10:0] mm_interconnect_0_ram_s1_address;                  // mm_interconnect_0:RAM_s1_address -> RAM:address
+	wire   [3:0] mm_interconnect_0_ram_s1_byteenable;               // mm_interconnect_0:RAM_s1_byteenable -> RAM:byteenable
+	wire         mm_interconnect_0_ram_s1_write;                    // mm_interconnect_0:RAM_s1_write -> RAM:write
+	wire  [31:0] mm_interconnect_0_ram_s1_writedata;                // mm_interconnect_0:RAM_s1_writedata -> RAM:writedata
+	wire         mm_interconnect_0_ram_s1_clken;                    // mm_interconnect_0:RAM_s1_clken -> RAM:clken
+	wire         mm_interconnect_0_seg7_s0_s1_chipselect;           // mm_interconnect_0:SEG7_S0_s1_chipselect -> SEG7_S0:chipselect
+	wire  [31:0] mm_interconnect_0_seg7_s0_s1_readdata;             // SEG7_S0:readdata -> mm_interconnect_0:SEG7_S0_s1_readdata
+	wire   [1:0] mm_interconnect_0_seg7_s0_s1_address;              // mm_interconnect_0:SEG7_S0_s1_address -> SEG7_S0:address
+	wire         mm_interconnect_0_seg7_s0_s1_write;                // mm_interconnect_0:SEG7_S0_s1_write -> SEG7_S0:write_n
+	wire  [31:0] mm_interconnect_0_seg7_s0_s1_writedata;            // mm_interconnect_0:SEG7_S0_s1_writedata -> SEG7_S0:writedata
+	wire         mm_interconnect_0_timer_s1_chipselect;             // mm_interconnect_0:TIMER_s1_chipselect -> TIMER:chipselect
+	wire  [15:0] mm_interconnect_0_timer_s1_readdata;               // TIMER:readdata -> mm_interconnect_0:TIMER_s1_readdata
+	wire   [2:0] mm_interconnect_0_timer_s1_address;                // mm_interconnect_0:TIMER_s1_address -> TIMER:address
+	wire         mm_interconnect_0_timer_s1_write;                  // mm_interconnect_0:TIMER_s1_write -> TIMER:write_n
+	wire  [15:0] mm_interconnect_0_timer_s1_writedata;              // mm_interconnect_0:TIMER_s1_writedata -> TIMER:writedata
+	wire         mm_interconnect_0_seg7_s1_s1_chipselect;           // mm_interconnect_0:SEG7_S1_s1_chipselect -> SEG7_S1:chipselect
+	wire  [31:0] mm_interconnect_0_seg7_s1_s1_readdata;             // SEG7_S1:readdata -> mm_interconnect_0:SEG7_S1_s1_readdata
+	wire   [1:0] mm_interconnect_0_seg7_s1_s1_address;              // mm_interconnect_0:SEG7_S1_s1_address -> SEG7_S1:address
+	wire         mm_interconnect_0_seg7_s1_s1_write;                // mm_interconnect_0:SEG7_S1_s1_write -> SEG7_S1:write_n
+	wire  [31:0] mm_interconnect_0_seg7_s1_s1_writedata;            // mm_interconnect_0:SEG7_S1_s1_writedata -> SEG7_S1:writedata
+	wire         mm_interconnect_0_seg7_m0_s1_chipselect;           // mm_interconnect_0:SEG7_M0_s1_chipselect -> SEG7_M0:chipselect
+	wire  [31:0] mm_interconnect_0_seg7_m0_s1_readdata;             // SEG7_M0:readdata -> mm_interconnect_0:SEG7_M0_s1_readdata
+	wire   [1:0] mm_interconnect_0_seg7_m0_s1_address;              // mm_interconnect_0:SEG7_M0_s1_address -> SEG7_M0:address
+	wire         mm_interconnect_0_seg7_m0_s1_write;                // mm_interconnect_0:SEG7_M0_s1_write -> SEG7_M0:write_n
+	wire  [31:0] mm_interconnect_0_seg7_m0_s1_writedata;            // mm_interconnect_0:SEG7_M0_s1_writedata -> SEG7_M0:writedata
+	wire         mm_interconnect_0_seg7_m1_s1_chipselect;           // mm_interconnect_0:SEG7_M1_s1_chipselect -> SEG7_M1:chipselect
+	wire  [31:0] mm_interconnect_0_seg7_m1_s1_readdata;             // SEG7_M1:readdata -> mm_interconnect_0:SEG7_M1_s1_readdata
+	wire   [1:0] mm_interconnect_0_seg7_m1_s1_address;              // mm_interconnect_0:SEG7_M1_s1_address -> SEG7_M1:address
+	wire         mm_interconnect_0_seg7_m1_s1_write;                // mm_interconnect_0:SEG7_M1_s1_write -> SEG7_M1:write_n
+	wire  [31:0] mm_interconnect_0_seg7_m1_s1_writedata;            // mm_interconnect_0:SEG7_M1_s1_writedata -> SEG7_M1:writedata
+	wire         mm_interconnect_0_seg7_h0_s1_chipselect;           // mm_interconnect_0:SEG7_H0_s1_chipselect -> SEG7_H0:chipselect
+	wire  [31:0] mm_interconnect_0_seg7_h0_s1_readdata;             // SEG7_H0:readdata -> mm_interconnect_0:SEG7_H0_s1_readdata
+	wire   [1:0] mm_interconnect_0_seg7_h0_s1_address;              // mm_interconnect_0:SEG7_H0_s1_address -> SEG7_H0:address
+	wire         mm_interconnect_0_seg7_h0_s1_write;                // mm_interconnect_0:SEG7_H0_s1_write -> SEG7_H0:write_n
+	wire  [31:0] mm_interconnect_0_seg7_h0_s1_writedata;            // mm_interconnect_0:SEG7_H0_s1_writedata -> SEG7_H0:writedata
+	wire         mm_interconnect_0_seg7_h1_s1_chipselect;           // mm_interconnect_0:SEG7_H1_s1_chipselect -> SEG7_H1:chipselect
+	wire  [31:0] mm_interconnect_0_seg7_h1_s1_readdata;             // SEG7_H1:readdata -> mm_interconnect_0:SEG7_H1_s1_readdata
+	wire   [1:0] mm_interconnect_0_seg7_h1_s1_address;              // mm_interconnect_0:SEG7_H1_s1_address -> SEG7_H1:address
+	wire         mm_interconnect_0_seg7_h1_s1_write;                // mm_interconnect_0:SEG7_H1_s1_write -> SEG7_H1:write_n
+	wire  [31:0] mm_interconnect_0_seg7_h1_s1_writedata;            // mm_interconnect_0:SEG7_H1_s1_writedata -> SEG7_H1:writedata
+	wire         mm_interconnect_0_leds_s1_chipselect;              // mm_interconnect_0:LEDS_s1_chipselect -> LEDS:chipselect
+	wire  [31:0] mm_interconnect_0_leds_s1_readdata;                // LEDS:readdata -> mm_interconnect_0:LEDS_s1_readdata
+	wire   [1:0] mm_interconnect_0_leds_s1_address;                 // mm_interconnect_0:LEDS_s1_address -> LEDS:address
+	wire         mm_interconnect_0_leds_s1_write;                   // mm_interconnect_0:LEDS_s1_write -> LEDS:write_n
+	wire  [31:0] mm_interconnect_0_leds_s1_writedata;               // mm_interconnect_0:LEDS_s1_writedata -> LEDS:writedata
+	wire         mm_interconnect_0_bt_mode_s1_chipselect;           // mm_interconnect_0:BT_MODE_s1_chipselect -> BT_MODE:chipselect
+	wire  [31:0] mm_interconnect_0_bt_mode_s1_readdata;             // BT_MODE:readdata -> mm_interconnect_0:BT_MODE_s1_readdata
+	wire   [1:0] mm_interconnect_0_bt_mode_s1_address;              // mm_interconnect_0:BT_MODE_s1_address -> BT_MODE:address
+	wire         mm_interconnect_0_bt_mode_s1_write;                // mm_interconnect_0:BT_MODE_s1_write -> BT_MODE:write_n
+	wire  [31:0] mm_interconnect_0_bt_mode_s1_writedata;            // mm_interconnect_0:BT_MODE_s1_writedata -> BT_MODE:writedata
+	wire         mm_interconnect_0_bt_sel_s1_chipselect;            // mm_interconnect_0:BT_SEL_s1_chipselect -> BT_SEL:chipselect
+	wire  [31:0] mm_interconnect_0_bt_sel_s1_readdata;              // BT_SEL:readdata -> mm_interconnect_0:BT_SEL_s1_readdata
+	wire   [1:0] mm_interconnect_0_bt_sel_s1_address;               // mm_interconnect_0:BT_SEL_s1_address -> BT_SEL:address
+	wire         mm_interconnect_0_bt_sel_s1_write;                 // mm_interconnect_0:BT_SEL_s1_write -> BT_SEL:write_n
+	wire  [31:0] mm_interconnect_0_bt_sel_s1_writedata;             // mm_interconnect_0:BT_SEL_s1_writedata -> BT_SEL:writedata
+	wire         mm_interconnect_0_bt_inc_s1_chipselect;            // mm_interconnect_0:BT_INC_s1_chipselect -> BT_INC:chipselect
+	wire  [31:0] mm_interconnect_0_bt_inc_s1_readdata;              // BT_INC:readdata -> mm_interconnect_0:BT_INC_s1_readdata
+	wire   [1:0] mm_interconnect_0_bt_inc_s1_address;               // mm_interconnect_0:BT_INC_s1_address -> BT_INC:address
+	wire         mm_interconnect_0_bt_inc_s1_write;                 // mm_interconnect_0:BT_INC_s1_write -> BT_INC:write_n
+	wire  [31:0] mm_interconnect_0_bt_inc_s1_writedata;             // mm_interconnect_0:BT_INC_s1_writedata -> BT_INC:writedata
+	wire         mm_interconnect_0_uart_s1_chipselect;              // mm_interconnect_0:UART_s1_chipselect -> UART:chipselect
+	wire  [15:0] mm_interconnect_0_uart_s1_readdata;                // UART:readdata -> mm_interconnect_0:UART_s1_readdata
+	wire   [2:0] mm_interconnect_0_uart_s1_address;                 // mm_interconnect_0:UART_s1_address -> UART:address
+	wire         mm_interconnect_0_uart_s1_read;                    // mm_interconnect_0:UART_s1_read -> UART:read_n
+	wire         mm_interconnect_0_uart_s1_begintransfer;           // mm_interconnect_0:UART_s1_begintransfer -> UART:begintransfer
+	wire         mm_interconnect_0_uart_s1_write;                   // mm_interconnect_0:UART_s1_write -> UART:write_n
+	wire  [15:0] mm_interconnect_0_uart_s1_writedata;               // mm_interconnect_0:UART_s1_writedata -> UART:writedata
+	wire         irq_mapper_receiver0_irq;                          // TIMER:irq -> irq_mapper:receiver0_irq
+	wire         irq_mapper_receiver1_irq;                          // BT_MODE:irq -> irq_mapper:receiver1_irq
+	wire         irq_mapper_receiver2_irq;                          // BT_SEL:irq -> irq_mapper:receiver2_irq
+	wire         irq_mapper_receiver3_irq;                          // BT_INC:irq -> irq_mapper:receiver3_irq
+	wire         irq_mapper_receiver4_irq;                          // UART:irq -> irq_mapper:receiver4_irq
+	wire  [31:0] cpu_irq_irq;                                       // irq_mapper:sender_irq -> CPU:irq
+	wire         rst_controller_reset_out_reset;                    // rst_controller:reset_out -> [BT_INC:reset_n, BT_MODE:reset_n, BT_SEL:reset_n, CPU:reset_n, LEDS:reset_n, RAM:reset, SEG7_H0:reset_n, SEG7_H1:reset_n, SEG7_M0:reset_n, SEG7_M1:reset_n, SEG7_S0:reset_n, SEG7_S1:reset_n, TIMER:reset_n, UART:reset_n, irq_mapper:reset, mm_interconnect_0:CPU_reset_reset_bridge_in_reset_reset, rst_translator:in_reset]
+	wire         rst_controller_reset_out_reset_req;                // rst_controller:reset_req -> [CPU:reset_req, RAM:reset_req, rst_translator:reset_req_in]
 
 	system_BT_INC bt_inc (
 		.clk        (clk_clk),                                //                 clk.clk
@@ -125,7 +127,7 @@ module system (
 		.chipselect (mm_interconnect_0_bt_inc_s1_chipselect), //                    .chipselect
 		.readdata   (mm_interconnect_0_bt_inc_s1_readdata),   //                    .readdata
 		.in_port    (btinc_export),                           // external_connection.export
-		.irq        (irq_mapper_receiver4_irq)                //                 irq.irq
+		.irq        (irq_mapper_receiver3_irq)                //                 irq.irq
 	);
 
 	system_BT_INC bt_mode (
@@ -137,7 +139,7 @@ module system (
 		.chipselect (mm_interconnect_0_bt_mode_s1_chipselect), //                    .chipselect
 		.readdata   (mm_interconnect_0_bt_mode_s1_readdata),   //                    .readdata
 		.in_port    (btmode_export),                           // external_connection.export
-		.irq        (irq_mapper_receiver2_irq)                 //                 irq.irq
+		.irq        (irq_mapper_receiver1_irq)                 //                 irq.irq
 	);
 
 	system_BT_INC bt_sel (
@@ -149,7 +151,7 @@ module system (
 		.chipselect (mm_interconnect_0_bt_sel_s1_chipselect), //                    .chipselect
 		.readdata   (mm_interconnect_0_bt_sel_s1_readdata),   //                    .readdata
 		.in_port    (btsel_export),                           // external_connection.export
-		.irq        (irq_mapper_receiver3_irq)                //                 irq.irq
+		.irq        (irq_mapper_receiver2_irq)                //                 irq.irq
 	);
 
 	system_CPU cpu (
@@ -280,114 +282,116 @@ module system (
 		.readdata   (mm_interconnect_0_timer_s1_readdata),   //      .readdata
 		.chipselect (mm_interconnect_0_timer_s1_chipselect), //      .chipselect
 		.write_n    (~mm_interconnect_0_timer_s1_write),     //      .write_n
-		.irq        (irq_mapper_receiver1_irq)               //   irq.irq
+		.irq        (irq_mapper_receiver0_irq)               //   irq.irq
 	);
 
 	system_UART uart (
-		.clk            (clk_clk),                                              //               clk.clk
-		.rst_n          (~rst_controller_reset_out_reset),                      //             reset.reset_n
-		.av_chipselect  (mm_interconnect_0_uart_avalon_jtag_slave_chipselect),  // avalon_jtag_slave.chipselect
-		.av_address     (mm_interconnect_0_uart_avalon_jtag_slave_address),     //                  .address
-		.av_read_n      (~mm_interconnect_0_uart_avalon_jtag_slave_read),       //                  .read_n
-		.av_readdata    (mm_interconnect_0_uart_avalon_jtag_slave_readdata),    //                  .readdata
-		.av_write_n     (~mm_interconnect_0_uart_avalon_jtag_slave_write),      //                  .write_n
-		.av_writedata   (mm_interconnect_0_uart_avalon_jtag_slave_writedata),   //                  .writedata
-		.av_waitrequest (mm_interconnect_0_uart_avalon_jtag_slave_waitrequest), //                  .waitrequest
-		.av_irq         (irq_mapper_receiver0_irq)                              //               irq.irq
+		.clk           (clk_clk),                                 //                 clk.clk
+		.reset_n       (~rst_controller_reset_out_reset),         //               reset.reset_n
+		.address       (mm_interconnect_0_uart_s1_address),       //                  s1.address
+		.begintransfer (mm_interconnect_0_uart_s1_begintransfer), //                    .begintransfer
+		.chipselect    (mm_interconnect_0_uart_s1_chipselect),    //                    .chipselect
+		.read_n        (~mm_interconnect_0_uart_s1_read),         //                    .read_n
+		.write_n       (~mm_interconnect_0_uart_s1_write),        //                    .write_n
+		.writedata     (mm_interconnect_0_uart_s1_writedata),     //                    .writedata
+		.readdata      (mm_interconnect_0_uart_s1_readdata),      //                    .readdata
+		.rxd           (uart_rxd),                                // external_connection.export
+		.txd           (uart_txd),                                //                    .export
+		.irq           (irq_mapper_receiver4_irq)                 //                 irq.irq
 	);
 
 	system_mm_interconnect_0 mm_interconnect_0 (
-		.CLK_clk_clk                           (clk_clk),                                              //                         CLK_clk.clk
-		.CPU_reset_reset_bridge_in_reset_reset (rst_controller_reset_out_reset),                       // CPU_reset_reset_bridge_in_reset.reset
-		.CPU_data_master_address               (cpu_data_master_address),                              //                 CPU_data_master.address
-		.CPU_data_master_waitrequest           (cpu_data_master_waitrequest),                          //                                .waitrequest
-		.CPU_data_master_byteenable            (cpu_data_master_byteenable),                           //                                .byteenable
-		.CPU_data_master_read                  (cpu_data_master_read),                                 //                                .read
-		.CPU_data_master_readdata              (cpu_data_master_readdata),                             //                                .readdata
-		.CPU_data_master_write                 (cpu_data_master_write),                                //                                .write
-		.CPU_data_master_writedata             (cpu_data_master_writedata),                            //                                .writedata
-		.CPU_data_master_debugaccess           (cpu_data_master_debugaccess),                          //                                .debugaccess
-		.CPU_instruction_master_address        (cpu_instruction_master_address),                       //          CPU_instruction_master.address
-		.CPU_instruction_master_waitrequest    (cpu_instruction_master_waitrequest),                   //                                .waitrequest
-		.CPU_instruction_master_read           (cpu_instruction_master_read),                          //                                .read
-		.CPU_instruction_master_readdata       (cpu_instruction_master_readdata),                      //                                .readdata
-		.BT_INC_s1_address                     (mm_interconnect_0_bt_inc_s1_address),                  //                       BT_INC_s1.address
-		.BT_INC_s1_write                       (mm_interconnect_0_bt_inc_s1_write),                    //                                .write
-		.BT_INC_s1_readdata                    (mm_interconnect_0_bt_inc_s1_readdata),                 //                                .readdata
-		.BT_INC_s1_writedata                   (mm_interconnect_0_bt_inc_s1_writedata),                //                                .writedata
-		.BT_INC_s1_chipselect                  (mm_interconnect_0_bt_inc_s1_chipselect),               //                                .chipselect
-		.BT_MODE_s1_address                    (mm_interconnect_0_bt_mode_s1_address),                 //                      BT_MODE_s1.address
-		.BT_MODE_s1_write                      (mm_interconnect_0_bt_mode_s1_write),                   //                                .write
-		.BT_MODE_s1_readdata                   (mm_interconnect_0_bt_mode_s1_readdata),                //                                .readdata
-		.BT_MODE_s1_writedata                  (mm_interconnect_0_bt_mode_s1_writedata),               //                                .writedata
-		.BT_MODE_s1_chipselect                 (mm_interconnect_0_bt_mode_s1_chipselect),              //                                .chipselect
-		.BT_SEL_s1_address                     (mm_interconnect_0_bt_sel_s1_address),                  //                       BT_SEL_s1.address
-		.BT_SEL_s1_write                       (mm_interconnect_0_bt_sel_s1_write),                    //                                .write
-		.BT_SEL_s1_readdata                    (mm_interconnect_0_bt_sel_s1_readdata),                 //                                .readdata
-		.BT_SEL_s1_writedata                   (mm_interconnect_0_bt_sel_s1_writedata),                //                                .writedata
-		.BT_SEL_s1_chipselect                  (mm_interconnect_0_bt_sel_s1_chipselect),               //                                .chipselect
-		.CPU_debug_mem_slave_address           (mm_interconnect_0_cpu_debug_mem_slave_address),        //             CPU_debug_mem_slave.address
-		.CPU_debug_mem_slave_write             (mm_interconnect_0_cpu_debug_mem_slave_write),          //                                .write
-		.CPU_debug_mem_slave_read              (mm_interconnect_0_cpu_debug_mem_slave_read),           //                                .read
-		.CPU_debug_mem_slave_readdata          (mm_interconnect_0_cpu_debug_mem_slave_readdata),       //                                .readdata
-		.CPU_debug_mem_slave_writedata         (mm_interconnect_0_cpu_debug_mem_slave_writedata),      //                                .writedata
-		.CPU_debug_mem_slave_byteenable        (mm_interconnect_0_cpu_debug_mem_slave_byteenable),     //                                .byteenable
-		.CPU_debug_mem_slave_waitrequest       (mm_interconnect_0_cpu_debug_mem_slave_waitrequest),    //                                .waitrequest
-		.CPU_debug_mem_slave_debugaccess       (mm_interconnect_0_cpu_debug_mem_slave_debugaccess),    //                                .debugaccess
-		.LEDS_s1_address                       (mm_interconnect_0_leds_s1_address),                    //                         LEDS_s1.address
-		.LEDS_s1_write                         (mm_interconnect_0_leds_s1_write),                      //                                .write
-		.LEDS_s1_readdata                      (mm_interconnect_0_leds_s1_readdata),                   //                                .readdata
-		.LEDS_s1_writedata                     (mm_interconnect_0_leds_s1_writedata),                  //                                .writedata
-		.LEDS_s1_chipselect                    (mm_interconnect_0_leds_s1_chipselect),                 //                                .chipselect
-		.RAM_s1_address                        (mm_interconnect_0_ram_s1_address),                     //                          RAM_s1.address
-		.RAM_s1_write                          (mm_interconnect_0_ram_s1_write),                       //                                .write
-		.RAM_s1_readdata                       (mm_interconnect_0_ram_s1_readdata),                    //                                .readdata
-		.RAM_s1_writedata                      (mm_interconnect_0_ram_s1_writedata),                   //                                .writedata
-		.RAM_s1_byteenable                     (mm_interconnect_0_ram_s1_byteenable),                  //                                .byteenable
-		.RAM_s1_chipselect                     (mm_interconnect_0_ram_s1_chipselect),                  //                                .chipselect
-		.RAM_s1_clken                          (mm_interconnect_0_ram_s1_clken),                       //                                .clken
-		.SEG7_H0_s1_address                    (mm_interconnect_0_seg7_h0_s1_address),                 //                      SEG7_H0_s1.address
-		.SEG7_H0_s1_write                      (mm_interconnect_0_seg7_h0_s1_write),                   //                                .write
-		.SEG7_H0_s1_readdata                   (mm_interconnect_0_seg7_h0_s1_readdata),                //                                .readdata
-		.SEG7_H0_s1_writedata                  (mm_interconnect_0_seg7_h0_s1_writedata),               //                                .writedata
-		.SEG7_H0_s1_chipselect                 (mm_interconnect_0_seg7_h0_s1_chipselect),              //                                .chipselect
-		.SEG7_H1_s1_address                    (mm_interconnect_0_seg7_h1_s1_address),                 //                      SEG7_H1_s1.address
-		.SEG7_H1_s1_write                      (mm_interconnect_0_seg7_h1_s1_write),                   //                                .write
-		.SEG7_H1_s1_readdata                   (mm_interconnect_0_seg7_h1_s1_readdata),                //                                .readdata
-		.SEG7_H1_s1_writedata                  (mm_interconnect_0_seg7_h1_s1_writedata),               //                                .writedata
-		.SEG7_H1_s1_chipselect                 (mm_interconnect_0_seg7_h1_s1_chipselect),              //                                .chipselect
-		.SEG7_M0_s1_address                    (mm_interconnect_0_seg7_m0_s1_address),                 //                      SEG7_M0_s1.address
-		.SEG7_M0_s1_write                      (mm_interconnect_0_seg7_m0_s1_write),                   //                                .write
-		.SEG7_M0_s1_readdata                   (mm_interconnect_0_seg7_m0_s1_readdata),                //                                .readdata
-		.SEG7_M0_s1_writedata                  (mm_interconnect_0_seg7_m0_s1_writedata),               //                                .writedata
-		.SEG7_M0_s1_chipselect                 (mm_interconnect_0_seg7_m0_s1_chipselect),              //                                .chipselect
-		.SEG7_M1_s1_address                    (mm_interconnect_0_seg7_m1_s1_address),                 //                      SEG7_M1_s1.address
-		.SEG7_M1_s1_write                      (mm_interconnect_0_seg7_m1_s1_write),                   //                                .write
-		.SEG7_M1_s1_readdata                   (mm_interconnect_0_seg7_m1_s1_readdata),                //                                .readdata
-		.SEG7_M1_s1_writedata                  (mm_interconnect_0_seg7_m1_s1_writedata),               //                                .writedata
-		.SEG7_M1_s1_chipselect                 (mm_interconnect_0_seg7_m1_s1_chipselect),              //                                .chipselect
-		.SEG7_S0_s1_address                    (mm_interconnect_0_seg7_s0_s1_address),                 //                      SEG7_S0_s1.address
-		.SEG7_S0_s1_write                      (mm_interconnect_0_seg7_s0_s1_write),                   //                                .write
-		.SEG7_S0_s1_readdata                   (mm_interconnect_0_seg7_s0_s1_readdata),                //                                .readdata
-		.SEG7_S0_s1_writedata                  (mm_interconnect_0_seg7_s0_s1_writedata),               //                                .writedata
-		.SEG7_S0_s1_chipselect                 (mm_interconnect_0_seg7_s0_s1_chipselect),              //                                .chipselect
-		.SEG7_S1_s1_address                    (mm_interconnect_0_seg7_s1_s1_address),                 //                      SEG7_S1_s1.address
-		.SEG7_S1_s1_write                      (mm_interconnect_0_seg7_s1_s1_write),                   //                                .write
-		.SEG7_S1_s1_readdata                   (mm_interconnect_0_seg7_s1_s1_readdata),                //                                .readdata
-		.SEG7_S1_s1_writedata                  (mm_interconnect_0_seg7_s1_s1_writedata),               //                                .writedata
-		.SEG7_S1_s1_chipselect                 (mm_interconnect_0_seg7_s1_s1_chipselect),              //                                .chipselect
-		.TIMER_s1_address                      (mm_interconnect_0_timer_s1_address),                   //                        TIMER_s1.address
-		.TIMER_s1_write                        (mm_interconnect_0_timer_s1_write),                     //                                .write
-		.TIMER_s1_readdata                     (mm_interconnect_0_timer_s1_readdata),                  //                                .readdata
-		.TIMER_s1_writedata                    (mm_interconnect_0_timer_s1_writedata),                 //                                .writedata
-		.TIMER_s1_chipselect                   (mm_interconnect_0_timer_s1_chipselect),                //                                .chipselect
-		.UART_avalon_jtag_slave_address        (mm_interconnect_0_uart_avalon_jtag_slave_address),     //          UART_avalon_jtag_slave.address
-		.UART_avalon_jtag_slave_write          (mm_interconnect_0_uart_avalon_jtag_slave_write),       //                                .write
-		.UART_avalon_jtag_slave_read           (mm_interconnect_0_uart_avalon_jtag_slave_read),        //                                .read
-		.UART_avalon_jtag_slave_readdata       (mm_interconnect_0_uart_avalon_jtag_slave_readdata),    //                                .readdata
-		.UART_avalon_jtag_slave_writedata      (mm_interconnect_0_uart_avalon_jtag_slave_writedata),   //                                .writedata
-		.UART_avalon_jtag_slave_waitrequest    (mm_interconnect_0_uart_avalon_jtag_slave_waitrequest), //                                .waitrequest
-		.UART_avalon_jtag_slave_chipselect     (mm_interconnect_0_uart_avalon_jtag_slave_chipselect)   //                                .chipselect
+		.CLK_clk_clk                           (clk_clk),                                           //                         CLK_clk.clk
+		.CPU_reset_reset_bridge_in_reset_reset (rst_controller_reset_out_reset),                    // CPU_reset_reset_bridge_in_reset.reset
+		.CPU_data_master_address               (cpu_data_master_address),                           //                 CPU_data_master.address
+		.CPU_data_master_waitrequest           (cpu_data_master_waitrequest),                       //                                .waitrequest
+		.CPU_data_master_byteenable            (cpu_data_master_byteenable),                        //                                .byteenable
+		.CPU_data_master_read                  (cpu_data_master_read),                              //                                .read
+		.CPU_data_master_readdata              (cpu_data_master_readdata),                          //                                .readdata
+		.CPU_data_master_write                 (cpu_data_master_write),                             //                                .write
+		.CPU_data_master_writedata             (cpu_data_master_writedata),                         //                                .writedata
+		.CPU_data_master_debugaccess           (cpu_data_master_debugaccess),                       //                                .debugaccess
+		.CPU_instruction_master_address        (cpu_instruction_master_address),                    //          CPU_instruction_master.address
+		.CPU_instruction_master_waitrequest    (cpu_instruction_master_waitrequest),                //                                .waitrequest
+		.CPU_instruction_master_read           (cpu_instruction_master_read),                       //                                .read
+		.CPU_instruction_master_readdata       (cpu_instruction_master_readdata),                   //                                .readdata
+		.BT_INC_s1_address                     (mm_interconnect_0_bt_inc_s1_address),               //                       BT_INC_s1.address
+		.BT_INC_s1_write                       (mm_interconnect_0_bt_inc_s1_write),                 //                                .write
+		.BT_INC_s1_readdata                    (mm_interconnect_0_bt_inc_s1_readdata),              //                                .readdata
+		.BT_INC_s1_writedata                   (mm_interconnect_0_bt_inc_s1_writedata),             //                                .writedata
+		.BT_INC_s1_chipselect                  (mm_interconnect_0_bt_inc_s1_chipselect),            //                                .chipselect
+		.BT_MODE_s1_address                    (mm_interconnect_0_bt_mode_s1_address),              //                      BT_MODE_s1.address
+		.BT_MODE_s1_write                      (mm_interconnect_0_bt_mode_s1_write),                //                                .write
+		.BT_MODE_s1_readdata                   (mm_interconnect_0_bt_mode_s1_readdata),             //                                .readdata
+		.BT_MODE_s1_writedata                  (mm_interconnect_0_bt_mode_s1_writedata),            //                                .writedata
+		.BT_MODE_s1_chipselect                 (mm_interconnect_0_bt_mode_s1_chipselect),           //                                .chipselect
+		.BT_SEL_s1_address                     (mm_interconnect_0_bt_sel_s1_address),               //                       BT_SEL_s1.address
+		.BT_SEL_s1_write                       (mm_interconnect_0_bt_sel_s1_write),                 //                                .write
+		.BT_SEL_s1_readdata                    (mm_interconnect_0_bt_sel_s1_readdata),              //                                .readdata
+		.BT_SEL_s1_writedata                   (mm_interconnect_0_bt_sel_s1_writedata),             //                                .writedata
+		.BT_SEL_s1_chipselect                  (mm_interconnect_0_bt_sel_s1_chipselect),            //                                .chipselect
+		.CPU_debug_mem_slave_address           (mm_interconnect_0_cpu_debug_mem_slave_address),     //             CPU_debug_mem_slave.address
+		.CPU_debug_mem_slave_write             (mm_interconnect_0_cpu_debug_mem_slave_write),       //                                .write
+		.CPU_debug_mem_slave_read              (mm_interconnect_0_cpu_debug_mem_slave_read),        //                                .read
+		.CPU_debug_mem_slave_readdata          (mm_interconnect_0_cpu_debug_mem_slave_readdata),    //                                .readdata
+		.CPU_debug_mem_slave_writedata         (mm_interconnect_0_cpu_debug_mem_slave_writedata),   //                                .writedata
+		.CPU_debug_mem_slave_byteenable        (mm_interconnect_0_cpu_debug_mem_slave_byteenable),  //                                .byteenable
+		.CPU_debug_mem_slave_waitrequest       (mm_interconnect_0_cpu_debug_mem_slave_waitrequest), //                                .waitrequest
+		.CPU_debug_mem_slave_debugaccess       (mm_interconnect_0_cpu_debug_mem_slave_debugaccess), //                                .debugaccess
+		.LEDS_s1_address                       (mm_interconnect_0_leds_s1_address),                 //                         LEDS_s1.address
+		.LEDS_s1_write                         (mm_interconnect_0_leds_s1_write),                   //                                .write
+		.LEDS_s1_readdata                      (mm_interconnect_0_leds_s1_readdata),                //                                .readdata
+		.LEDS_s1_writedata                     (mm_interconnect_0_leds_s1_writedata),               //                                .writedata
+		.LEDS_s1_chipselect                    (mm_interconnect_0_leds_s1_chipselect),              //                                .chipselect
+		.RAM_s1_address                        (mm_interconnect_0_ram_s1_address),                  //                          RAM_s1.address
+		.RAM_s1_write                          (mm_interconnect_0_ram_s1_write),                    //                                .write
+		.RAM_s1_readdata                       (mm_interconnect_0_ram_s1_readdata),                 //                                .readdata
+		.RAM_s1_writedata                      (mm_interconnect_0_ram_s1_writedata),                //                                .writedata
+		.RAM_s1_byteenable                     (mm_interconnect_0_ram_s1_byteenable),               //                                .byteenable
+		.RAM_s1_chipselect                     (mm_interconnect_0_ram_s1_chipselect),               //                                .chipselect
+		.RAM_s1_clken                          (mm_interconnect_0_ram_s1_clken),                    //                                .clken
+		.SEG7_H0_s1_address                    (mm_interconnect_0_seg7_h0_s1_address),              //                      SEG7_H0_s1.address
+		.SEG7_H0_s1_write                      (mm_interconnect_0_seg7_h0_s1_write),                //                                .write
+		.SEG7_H0_s1_readdata                   (mm_interconnect_0_seg7_h0_s1_readdata),             //                                .readdata
+		.SEG7_H0_s1_writedata                  (mm_interconnect_0_seg7_h0_s1_writedata),            //                                .writedata
+		.SEG7_H0_s1_chipselect                 (mm_interconnect_0_seg7_h0_s1_chipselect),           //                                .chipselect
+		.SEG7_H1_s1_address                    (mm_interconnect_0_seg7_h1_s1_address),              //                      SEG7_H1_s1.address
+		.SEG7_H1_s1_write                      (mm_interconnect_0_seg7_h1_s1_write),                //                                .write
+		.SEG7_H1_s1_readdata                   (mm_interconnect_0_seg7_h1_s1_readdata),             //                                .readdata
+		.SEG7_H1_s1_writedata                  (mm_interconnect_0_seg7_h1_s1_writedata),            //                                .writedata
+		.SEG7_H1_s1_chipselect                 (mm_interconnect_0_seg7_h1_s1_chipselect),           //                                .chipselect
+		.SEG7_M0_s1_address                    (mm_interconnect_0_seg7_m0_s1_address),              //                      SEG7_M0_s1.address
+		.SEG7_M0_s1_write                      (mm_interconnect_0_seg7_m0_s1_write),                //                                .write
+		.SEG7_M0_s1_readdata                   (mm_interconnect_0_seg7_m0_s1_readdata),             //                                .readdata
+		.SEG7_M0_s1_writedata                  (mm_interconnect_0_seg7_m0_s1_writedata),            //                                .writedata
+		.SEG7_M0_s1_chipselect                 (mm_interconnect_0_seg7_m0_s1_chipselect),           //                                .chipselect
+		.SEG7_M1_s1_address                    (mm_interconnect_0_seg7_m1_s1_address),              //                      SEG7_M1_s1.address
+		.SEG7_M1_s1_write                      (mm_interconnect_0_seg7_m1_s1_write),                //                                .write
+		.SEG7_M1_s1_readdata                   (mm_interconnect_0_seg7_m1_s1_readdata),             //                                .readdata
+		.SEG7_M1_s1_writedata                  (mm_interconnect_0_seg7_m1_s1_writedata),            //                                .writedata
+		.SEG7_M1_s1_chipselect                 (mm_interconnect_0_seg7_m1_s1_chipselect),           //                                .chipselect
+		.SEG7_S0_s1_address                    (mm_interconnect_0_seg7_s0_s1_address),              //                      SEG7_S0_s1.address
+		.SEG7_S0_s1_write                      (mm_interconnect_0_seg7_s0_s1_write),                //                                .write
+		.SEG7_S0_s1_readdata                   (mm_interconnect_0_seg7_s0_s1_readdata),             //                                .readdata
+		.SEG7_S0_s1_writedata                  (mm_interconnect_0_seg7_s0_s1_writedata),            //                                .writedata
+		.SEG7_S0_s1_chipselect                 (mm_interconnect_0_seg7_s0_s1_chipselect),           //                                .chipselect
+		.SEG7_S1_s1_address                    (mm_interconnect_0_seg7_s1_s1_address),              //                      SEG7_S1_s1.address
+		.SEG7_S1_s1_write                      (mm_interconnect_0_seg7_s1_s1_write),                //                                .write
+		.SEG7_S1_s1_readdata                   (mm_interconnect_0_seg7_s1_s1_readdata),             //                                .readdata
+		.SEG7_S1_s1_writedata                  (mm_interconnect_0_seg7_s1_s1_writedata),            //                                .writedata
+		.SEG7_S1_s1_chipselect                 (mm_interconnect_0_seg7_s1_s1_chipselect),           //                                .chipselect
+		.TIMER_s1_address                      (mm_interconnect_0_timer_s1_address),                //                        TIMER_s1.address
+		.TIMER_s1_write                        (mm_interconnect_0_timer_s1_write),                  //                                .write
+		.TIMER_s1_readdata                     (mm_interconnect_0_timer_s1_readdata),               //                                .readdata
+		.TIMER_s1_writedata                    (mm_interconnect_0_timer_s1_writedata),              //                                .writedata
+		.TIMER_s1_chipselect                   (mm_interconnect_0_timer_s1_chipselect),             //                                .chipselect
+		.UART_s1_address                       (mm_interconnect_0_uart_s1_address),                 //                         UART_s1.address
+		.UART_s1_write                         (mm_interconnect_0_uart_s1_write),                   //                                .write
+		.UART_s1_read                          (mm_interconnect_0_uart_s1_read),                    //                                .read
+		.UART_s1_readdata                      (mm_interconnect_0_uart_s1_readdata),                //                                .readdata
+		.UART_s1_writedata                     (mm_interconnect_0_uart_s1_writedata),               //                                .writedata
+		.UART_s1_begintransfer                 (mm_interconnect_0_uart_s1_begintransfer),           //                                .begintransfer
+		.UART_s1_chipselect                    (mm_interconnect_0_uart_s1_chipselect)               //                                .chipselect
 	);
 
 	system_irq_mapper irq_mapper (

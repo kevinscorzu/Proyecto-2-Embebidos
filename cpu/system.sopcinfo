@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="system" kind="system" version="1.0" fabric="QSYS">
  <!-- Format version 20.1 720 (Future versions may contain additional information.) -->
- <!-- 2021.09.27.16:43:22 -->
+ <!-- 2021.10.01.19:25:27 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1632782602</value>
+  <value>1633137927</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -2951,12 +2951,6 @@ parameters are a RESULT of the module parameters. -->
    </clockDomainMember>
    <clockDomainMember>
     <isBridge>false</isBridge>
-    <moduleName>UART</moduleName>
-    <slaveName>clk</slaveName>
-    <name>UART.clk</name>
-   </clockDomainMember>
-   <clockDomainMember>
-    <isBridge>false</isBridge>
     <moduleName>SEG7_S0</moduleName>
     <slaveName>clk</slaveName>
     <name>SEG7_S0.clk</name>
@@ -3020,6 +3014,12 @@ parameters are a RESULT of the module parameters. -->
     <moduleName>LEDS</moduleName>
     <slaveName>clk</slaveName>
     <name>LEDS.clk</name>
+   </clockDomainMember>
+   <clockDomainMember>
+    <isBridge>false</isBridge>
+    <moduleName>UART</moduleName>
+    <slaveName>clk</slaveName>
+    <name>UART.clk</name>
    </clockDomainMember>
    <clockDomainMember>
     <isBridge>false</isBridge>
@@ -4681,7 +4681,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="instSlaveMapParam">
    <type>java.lang.String</type>
-   <value><![CDATA[<address-map><slave name='RAM.s1' start='0x2000' end='0x3400' type='altera_avalon_onchip_memory2.s1' /><slave name='CPU.debug_mem_slave' start='0x4800' end='0x5000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='UART.avalon_jtag_slave' start='0x50C8' end='0x50D0' type='altera_avalon_jtag_uart.avalon_jtag_slave' /></address-map>]]></value>
+   <value><![CDATA[<address-map><slave name='RAM.s1' start='0x2000' end='0x3400' type='altera_avalon_onchip_memory2.s1' /><slave name='CPU.debug_mem_slave' start='0x4800' end='0x5000' type='altera_nios2_gen2.debug_mem_slave' /></address-map>]]></value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -4701,7 +4701,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="dataSlaveMapParam">
    <type>java.lang.String</type>
-   <value><![CDATA[<address-map><slave name='RAM.s1' start='0x2000' end='0x3400' type='altera_avalon_onchip_memory2.s1' /><slave name='TIMER.s1' start='0x4000' end='0x4020' type='altera_avalon_timer.s1' /><slave name='CPU.debug_mem_slave' start='0x4800' end='0x5000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='SEG7_S0.s1' start='0x5000' end='0x5010' type='altera_avalon_pio.s1' /><slave name='SEG7_S1.s1' start='0x5010' end='0x5020' type='altera_avalon_pio.s1' /><slave name='SEG7_M0.s1' start='0x5020' end='0x5030' type='altera_avalon_pio.s1' /><slave name='SEG7_M1.s1' start='0x5030' end='0x5040' type='altera_avalon_pio.s1' /><slave name='SEG7_H0.s1' start='0x5040' end='0x5050' type='altera_avalon_pio.s1' /><slave name='SEG7_H1.s1' start='0x5050' end='0x5060' type='altera_avalon_pio.s1' /><slave name='BT_MODE.s1' start='0x5060' end='0x5070' type='altera_avalon_pio.s1' /><slave name='BT_SEL.s1' start='0x5070' end='0x5080' type='altera_avalon_pio.s1' /><slave name='BT_INC.s1' start='0x5080' end='0x5090' type='altera_avalon_pio.s1' /><slave name='LEDS.s1' start='0x5090' end='0x50A0' type='altera_avalon_pio.s1' /><slave name='UART.avalon_jtag_slave' start='0x50C8' end='0x50D0' type='altera_avalon_jtag_uart.avalon_jtag_slave' /></address-map>]]></value>
+   <value><![CDATA[<address-map><slave name='RAM.s1' start='0x2000' end='0x3400' type='altera_avalon_onchip_memory2.s1' /><slave name='TIMER.s1' start='0x4000' end='0x4020' type='altera_avalon_timer.s1' /><slave name='CPU.debug_mem_slave' start='0x4800' end='0x5000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='SEG7_S0.s1' start='0x5000' end='0x5010' type='altera_avalon_pio.s1' /><slave name='SEG7_S1.s1' start='0x5010' end='0x5020' type='altera_avalon_pio.s1' /><slave name='SEG7_M0.s1' start='0x5020' end='0x5030' type='altera_avalon_pio.s1' /><slave name='SEG7_M1.s1' start='0x5030' end='0x5040' type='altera_avalon_pio.s1' /><slave name='SEG7_H0.s1' start='0x5040' end='0x5050' type='altera_avalon_pio.s1' /><slave name='SEG7_H1.s1' start='0x5050' end='0x5060' type='altera_avalon_pio.s1' /><slave name='BT_MODE.s1' start='0x5060' end='0x5070' type='altera_avalon_pio.s1' /><slave name='BT_SEL.s1' start='0x5070' end='0x5080' type='altera_avalon_pio.s1' /><slave name='BT_INC.s1' start='0x5080' end='0x5090' type='altera_avalon_pio.s1' /><slave name='LEDS.s1' start='0x5090' end='0x50A0' type='altera_avalon_pio.s1' /><slave name='UART.s1' start='0x50A0' end='0x50C0' type='altera_avalon_uart.s1' /></address-map>]]></value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -5369,14 +5369,6 @@ parameters are a RESULT of the module parameters. -->
    </port>
    <memoryBlock>
     <isBridge>false</isBridge>
-    <moduleName>UART</moduleName>
-    <slaveName>avalon_jtag_slave</slaveName>
-    <name>UART.avalon_jtag_slave</name>
-    <baseAddress>20680</baseAddress>
-    <span>8</span>
-   </memoryBlock>
-   <memoryBlock>
-    <isBridge>false</isBridge>
     <moduleName>CPU</moduleName>
     <slaveName>debug_mem_slave</slaveName>
     <name>CPU.debug_mem_slave</name>
@@ -5478,6 +5470,14 @@ parameters are a RESULT of the module parameters. -->
     <name>BT_INC.s1</name>
     <baseAddress>20608</baseAddress>
     <span>16</span>
+   </memoryBlock>
+   <memoryBlock>
+    <isBridge>false</isBridge>
+    <moduleName>UART</moduleName>
+    <slaveName>s1</slaveName>
+    <name>UART.s1</name>
+    <baseAddress>20640</baseAddress>
+    <span>32</span>
    </memoryBlock>
   </interface>
   <interface name="instruction_master" kind="avalon_master" version="20.1">
@@ -5768,14 +5768,6 @@ parameters are a RESULT of the module parameters. -->
    </port>
    <memoryBlock>
     <isBridge>false</isBridge>
-    <moduleName>UART</moduleName>
-    <slaveName>avalon_jtag_slave</slaveName>
-    <name>UART.avalon_jtag_slave</name>
-    <baseAddress>20680</baseAddress>
-    <span>8</span>
-   </memoryBlock>
-   <memoryBlock>
-    <isBridge>false</isBridge>
     <moduleName>CPU</moduleName>
     <slaveName>debug_mem_slave</slaveName>
     <name>CPU.debug_mem_slave</name>
@@ -5861,13 +5853,6 @@ parameters are a RESULT of the module parameters. -->
    </port>
    <interrupt>
     <isBridge>false</isBridge>
-    <moduleName>UART</moduleName>
-    <slaveName>irq</slaveName>
-    <name>UART.irq</name>
-    <interruptNumber>0</interruptNumber>
-   </interrupt>
-   <interrupt>
-    <isBridge>false</isBridge>
     <moduleName>TIMER</moduleName>
     <slaveName>irq</slaveName>
     <name>TIMER.irq</name>
@@ -5893,6 +5878,13 @@ parameters are a RESULT of the module parameters. -->
     <slaveName>irq</slaveName>
     <name>BT_INC.irq</name>
     <interruptNumber>4</interruptNumber>
+   </interrupt>
+   <interrupt>
+    <isBridge>false</isBridge>
+    <moduleName>UART</moduleName>
+    <slaveName>irq</slaveName>
+    <name>UART.irq</name>
+    <interruptNumber>0</interruptNumber>
    </interrupt>
   </interface>
   <interface name="debug_reset_request" kind="reset_source" version="20.1">
@@ -13484,28 +13476,56 @@ parameters are a RESULT of the module parameters. -->
    </port>
   </interface>
  </module>
- <module name="UART" kind="altera_avalon_jtag_uart" version="20.1" path="UART">
+ <module name="UART" kind="altera_avalon_uart" version="20.1" path="UART">
   <!-- Describes a single module. Module parameters are
 the requested settings for a module instance. -->
   <assignment>
-   <name>embeddedsw.CMacro.READ_DEPTH</name>
-   <value>64</value>
+   <name>embeddedsw.CMacro.BAUD</name>
+   <value>115200</value>
   </assignment>
   <assignment>
-   <name>embeddedsw.CMacro.READ_THRESHOLD</name>
+   <name>embeddedsw.CMacro.DATA_BITS</name>
    <value>8</value>
   </assignment>
   <assignment>
-   <name>embeddedsw.CMacro.WRITE_DEPTH</name>
-   <value>64</value>
+   <name>embeddedsw.CMacro.FIXED_BAUD</name>
+   <value>1</value>
   </assignment>
   <assignment>
-   <name>embeddedsw.CMacro.WRITE_THRESHOLD</name>
-   <value>8</value>
+   <name>embeddedsw.CMacro.FREQ</name>
+   <value>50000000</value>
+  </assignment>
+  <assignment>
+   <name>embeddedsw.CMacro.PARITY</name>
+   <value>'N'</value>
+  </assignment>
+  <assignment>
+   <name>embeddedsw.CMacro.SIM_CHAR_STREAM</name>
+   <value>""</value>
+  </assignment>
+  <assignment>
+   <name>embeddedsw.CMacro.SIM_TRUE_BAUD</name>
+   <value>0</value>
+  </assignment>
+  <assignment>
+   <name>embeddedsw.CMacro.STOP_BITS</name>
+   <value>1</value>
+  </assignment>
+  <assignment>
+   <name>embeddedsw.CMacro.SYNC_REG_DEPTH</name>
+   <value>2</value>
+  </assignment>
+  <assignment>
+   <name>embeddedsw.CMacro.USE_CTS_RTS</name>
+   <value>0</value>
+  </assignment>
+  <assignment>
+   <name>embeddedsw.CMacro.USE_EOP_REGISTER</name>
+   <value>0</value>
   </assignment>
   <assignment>
    <name>embeddedsw.dts.compatible</name>
-   <value>altr,juart-1.0</value>
+   <value>altr,uart-1.0</value>
   </assignment>
   <assignment>
    <name>embeddedsw.dts.group</name>
@@ -13513,37 +13533,29 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.dts.name</name>
-   <value>juart</value>
+   <value>uart</value>
+  </assignment>
+  <assignment>
+   <name>embeddedsw.dts.params.clock-frequency</name>
+   <value>50000000</value>
+  </assignment>
+  <assignment>
+   <name>embeddedsw.dts.params.current-speed</name>
+   <value>115200</value>
   </assignment>
   <assignment>
    <name>embeddedsw.dts.vendor</name>
    <value>altr</value>
   </assignment>
-  <parameter name="allowMultipleConnections">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="hubInstanceID">
+  <parameter name="baud">
    <type>int</type>
-   <value>0</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="readBufferDepth">
-   <type>int</type>
-   <value>64</value>
+   <value>115200</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
    <valid>true</valid>
   </parameter>
-  <parameter name="readIRQThreshold">
+  <parameter name="dataBits">
    <type>int</type>
    <value>8</value>
    <derived>false</derived>
@@ -13551,23 +13563,71 @@ the requested settings for a module instance. -->
    <visible>true</visible>
    <valid>true</valid>
   </parameter>
-  <parameter name="simInputCharacterStream">
-   <type>java.lang.String</type>
-   <value></value>
+  <parameter name="fixedBaud">
+   <type>boolean</type>
+   <value>true</value>
    <derived>false</derived>
-   <enabled>false</enabled>
-   <visible>false</visible>
+   <enabled>true</enabled>
+   <visible>true</visible>
    <valid>true</valid>
   </parameter>
-  <parameter name="simInteractiveOptions">
+  <parameter name="parity">
    <type>java.lang.String</type>
-   <value>NO_INTERACTIVE_WINDOWS</value>
+   <value>NONE</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="simCharStream">
+   <type>java.lang.String</type>
+   <value></value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
    <valid>true</valid>
   </parameter>
-  <parameter name="useRegistersForReadBuffer">
+  <parameter name="simInteractiveInputEnable">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>false</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="simInteractiveOutputEnable">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>false</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="simTrueBaud">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>false</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="stopBits">
+   <type>int</type>
+   <value>1</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="syncRegDepth">
+   <type>int</type>
+   <value>2</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="useCtsRts">
    <type>boolean</type>
    <value>false</value>
    <derived>false</derived>
@@ -13575,7 +13635,7 @@ the requested settings for a module instance. -->
    <visible>true</visible>
    <valid>true</valid>
   </parameter>
-  <parameter name="useRegistersForWriteBuffer">
+  <parameter name="useEopRegister">
    <type>boolean</type>
    <value>false</value>
    <derived>false</derived>
@@ -13591,23 +13651,7 @@ the requested settings for a module instance. -->
    <visible>false</visible>
    <valid>true</valid>
   </parameter>
-  <parameter name="writeBufferDepth">
-   <type>int</type>
-   <value>64</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="writeIRQThreshold">
-   <type>int</type>
-   <value>8</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="clkFreq">
+  <parameter name="clockRate">
    <type>long</type>
    <value>50000000</value>
    <derived>false</derived>
@@ -13617,34 +13661,17 @@ the requested settings for a module instance. -->
    <sysinfo_type>CLOCK_RATE</sysinfo_type>
    <sysinfo_arg>clk</sysinfo_arg>
   </parameter>
-  <parameter name="avalonSpec">
+  <parameter name="baudError">
+   <type>double</type>
+   <value>0.01</value>
+   <derived>true</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="parityFisrtChar">
    <type>java.lang.String</type>
-   <value>2.0</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-   <sysinfo_type>AVALON_SPEC</sysinfo_type>
-  </parameter>
-  <parameter name="legacySignalAllow">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>true</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="enableInteractiveInput">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>true</derived>
-   <enabled>true</enabled>
-   <visible>false</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="enableInteractiveOutput">
-   <type>boolean</type>
-   <value>false</value>
+   <value>N</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -13766,13 +13793,13 @@ parameters are a RESULT of the module parameters. -->
    <type>reset</type>
    <isStart>false</isStart>
    <port>
-    <name>rst_n</name>
+    <name>reset_n</name>
     <direction>Input</direction>
     <width>1</width>
     <role>reset_n</role>
    </port>
   </interface>
-  <interface name="avalon_jtag_slave" kind="avalon_slave" version="20.1">
+  <interface name="s1" kind="avalon_slave" version="20.1">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
@@ -13810,7 +13837,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="addressSpan">
     <type>java.math.BigInteger</type>
-    <value>2</value>
+    <value>8</value>
     <derived>true</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -13908,7 +13935,7 @@ parameters are a RESULT of the module parameters. -->
     <type>int</type>
     <value>0</value>
     <derived>false</derived>
-    <enabled>false</enabled>
+    <enabled>true</enabled>
     <visible>true</visible>
     <valid>true</valid>
    </parameter>
@@ -14012,7 +14039,7 @@ parameters are a RESULT of the module parameters. -->
     <type>int</type>
     <value>1</value>
     <derived>false</derived>
-    <enabled>false</enabled>
+    <enabled>true</enabled>
     <visible>true</visible>
     <valid>true</valid>
    </parameter>
@@ -14036,7 +14063,7 @@ parameters are a RESULT of the module parameters. -->
     <type>int</type>
     <value>0</value>
     <derived>false</derived>
-    <enabled>false</enabled>
+    <enabled>true</enabled>
     <visible>true</visible>
     <valid>true</valid>
    </parameter>
@@ -14044,7 +14071,7 @@ parameters are a RESULT of the module parameters. -->
     <type>com.altera.sopcmodel.avalon.TimingUnits</type>
     <value>Cycles</value>
     <derived>false</derived>
-    <enabled>false</enabled>
+    <enabled>true</enabled>
     <visible>true</visible>
     <valid>true</valid>
    </parameter>
@@ -14074,7 +14101,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="writeWaitStates">
     <type>int</type>
-    <value>0</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -14082,9 +14109,9 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="writeWaitTime">
     <type>int</type>
-    <value>0</value>
+    <value>1</value>
     <derived>false</derived>
-    <enabled>false</enabled>
+    <enabled>true</enabled>
     <visible>true</visible>
     <valid>true</valid>
    </parameter>
@@ -14107,46 +14134,97 @@ parameters are a RESULT of the module parameters. -->
    <type>avalon</type>
    <isStart>false</isStart>
    <port>
-    <name>av_chipselect</name>
+    <name>address</name>
+    <direction>Input</direction>
+    <width>3</width>
+    <role>address</role>
+   </port>
+   <port>
+    <name>begintransfer</name>
+    <direction>Input</direction>
+    <width>1</width>
+    <role>begintransfer</role>
+   </port>
+   <port>
+    <name>chipselect</name>
     <direction>Input</direction>
     <width>1</width>
     <role>chipselect</role>
    </port>
    <port>
-    <name>av_address</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>address</role>
-   </port>
-   <port>
-    <name>av_read_n</name>
+    <name>read_n</name>
     <direction>Input</direction>
     <width>1</width>
     <role>read_n</role>
    </port>
    <port>
-    <name>av_readdata</name>
-    <direction>Output</direction>
-    <width>32</width>
-    <role>readdata</role>
-   </port>
-   <port>
-    <name>av_write_n</name>
+    <name>write_n</name>
     <direction>Input</direction>
     <width>1</width>
     <role>write_n</role>
    </port>
    <port>
-    <name>av_writedata</name>
+    <name>writedata</name>
     <direction>Input</direction>
-    <width>32</width>
+    <width>16</width>
     <role>writedata</role>
    </port>
    <port>
-    <name>av_waitrequest</name>
+    <name>readdata</name>
+    <direction>Output</direction>
+    <width>16</width>
+    <role>readdata</role>
+   </port>
+  </interface>
+  <interface name="external_connection" kind="conduit_end" version="20.1">
+   <!-- The connection points exposed by a module instance for the
+particular module parameters. Connection points and their
+parameters are a RESULT of the module parameters. -->
+   <parameter name="associatedClock">
+    <type>java.lang.String</type>
+    <value></value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>true</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="associatedReset">
+    <type>java.lang.String</type>
+    <value></value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>true</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="deviceFamily">
+    <type>java.lang.String</type>
+    <value>UNKNOWN</value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>true</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="generateLegacySim">
+    <type>boolean</type>
+    <value>false</value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>true</visible>
+    <valid>true</valid>
+   </parameter>
+   <type>conduit</type>
+   <isStart>false</isStart>
+   <port>
+    <name>rxd</name>
+    <direction>Input</direction>
+    <width>1</width>
+    <role>export</role>
+   </port>
+   <port>
+    <name>txd</name>
     <direction>Output</direction>
     <width>1</width>
-    <role>waitrequest</role>
+    <role>export</role>
    </port>
   </interface>
   <interface name="irq" kind="interrupt_sender" version="20.1">
@@ -14155,7 +14233,7 @@ particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
    <parameter name="associatedAddressablePoint">
     <type>com.altera.entityinterfaces.IConnectionPoint</type>
-    <value>UART.avalon_jtag_slave</value>
+    <value>UART.s1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -14220,64 +14298,13 @@ parameters are a RESULT of the module parameters. -->
    <type>interrupt</type>
    <isStart>false</isStart>
    <port>
-    <name>av_irq</name>
+    <name>irq</name>
     <direction>Output</direction>
     <width>1</width>
     <role>irq</role>
    </port>
   </interface>
  </module>
- <connection
-   name="CPU.data_master/UART.avalon_jtag_slave"
-   kind="avalon"
-   version="20.1"
-   start="CPU.data_master"
-   end="UART.avalon_jtag_slave">
-  <parameter name="arbitrationPriority">
-   <type>int</type>
-   <value>1</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="baseAddress">
-   <type>java.math.BigInteger</type>
-   <value>0x50c8</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="defaultConnection">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>CPU</startModule>
-  <startConnectionPoint>data_master</startConnectionPoint>
-  <endModule>UART</endModule>
-  <endConnectionPoint>avalon_jtag_slave</endConnectionPoint>
- </connection>
  <connection
    name="CPU.data_master/CPU.debug_mem_slave"
    kind="avalon"
@@ -14942,11 +14969,11 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>s1</endConnectionPoint>
  </connection>
  <connection
-   name="CPU.instruction_master/UART.avalon_jtag_slave"
+   name="CPU.data_master/UART.s1"
    kind="avalon"
    version="20.1"
-   start="CPU.instruction_master"
-   end="UART.avalon_jtag_slave">
+   start="CPU.data_master"
+   end="UART.s1">
   <parameter name="arbitrationPriority">
    <type>int</type>
    <value>1</value>
@@ -14957,7 +14984,7 @@ parameters are a RESULT of the module parameters. -->
   </parameter>
   <parameter name="baseAddress">
    <type>java.math.BigInteger</type>
-   <value>0x50c8</value>
+   <value>0x50a0</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -14988,9 +15015,9 @@ parameters are a RESULT of the module parameters. -->
    <valid>true</valid>
   </parameter>
   <startModule>CPU</startModule>
-  <startConnectionPoint>instruction_master</startConnectionPoint>
+  <startConnectionPoint>data_master</startConnectionPoint>
   <endModule>UART</endModule>
-  <endConnectionPoint>avalon_jtag_slave</endConnectionPoint>
+  <endConnectionPoint>s1</endConnectionPoint>
  </connection>
  <connection
    name="CPU.instruction_master/CPU.debug_mem_slave"
@@ -15119,33 +15146,6 @@ parameters are a RESULT of the module parameters. -->
   <startModule>CLK</startModule>
   <startConnectionPoint>clk</startConnectionPoint>
   <endModule>CPU</endModule>
-  <endConnectionPoint>clk</endConnectionPoint>
- </connection>
- <connection
-   name="CLK.clk/UART.clk"
-   kind="clock"
-   version="20.1"
-   start="CLK.clk"
-   end="UART.clk">
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>CLK</startModule>
-  <startConnectionPoint>clk</startConnectionPoint>
-  <endModule>UART</endModule>
   <endConnectionPoint>clk</endConnectionPoint>
  </connection>
  <connection
@@ -15446,6 +15446,33 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>clk</endConnectionPoint>
  </connection>
  <connection
+   name="CLK.clk/UART.clk"
+   kind="clock"
+   version="20.1"
+   start="CLK.clk"
+   end="UART.clk">
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>CLK</startModule>
+  <startConnectionPoint>clk</startConnectionPoint>
+  <endModule>UART</endModule>
+  <endConnectionPoint>clk</endConnectionPoint>
+ </connection>
+ <connection
    name="CLK.clk/RAM.clk1"
    kind="clock"
    version="20.1"
@@ -15471,41 +15498,6 @@ parameters are a RESULT of the module parameters. -->
   <startConnectionPoint>clk</startConnectionPoint>
   <endModule>RAM</endModule>
   <endConnectionPoint>clk1</endConnectionPoint>
- </connection>
- <connection
-   name="CPU.irq/UART.irq"
-   kind="interrupt"
-   version="20.1"
-   start="CPU.irq"
-   end="UART.irq">
-  <parameter name="irqNumber">
-   <type>int</type>
-   <value>0</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>CPU</startModule>
-  <startConnectionPoint>irq</startConnectionPoint>
-  <endModule>UART</endModule>
-  <endConnectionPoint>irq</endConnectionPoint>
  </connection>
  <connection
    name="CPU.irq/TIMER.irq"
@@ -15648,6 +15640,41 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>irq</endConnectionPoint>
  </connection>
  <connection
+   name="CPU.irq/UART.irq"
+   kind="interrupt"
+   version="20.1"
+   start="CPU.irq"
+   end="UART.irq">
+  <parameter name="irqNumber">
+   <type>int</type>
+   <value>0</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>CPU</startModule>
+  <startConnectionPoint>irq</startConnectionPoint>
+  <endModule>UART</endModule>
+  <endConnectionPoint>irq</endConnectionPoint>
+ </connection>
+ <connection
    name="CLK.clk_reset/CPU.reset"
    kind="reset"
    version="20.1"
@@ -15672,33 +15699,6 @@ parameters are a RESULT of the module parameters. -->
   <startModule>CLK</startModule>
   <startConnectionPoint>clk_reset</startConnectionPoint>
   <endModule>CPU</endModule>
-  <endConnectionPoint>reset</endConnectionPoint>
- </connection>
- <connection
-   name="CLK.clk_reset/UART.reset"
-   kind="reset"
-   version="20.1"
-   start="CLK.clk_reset"
-   end="UART.reset">
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>CLK</startModule>
-  <startConnectionPoint>clk_reset</startConnectionPoint>
-  <endModule>UART</endModule>
   <endConnectionPoint>reset</endConnectionPoint>
  </connection>
  <connection
@@ -15999,6 +15999,33 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>reset</endConnectionPoint>
  </connection>
  <connection
+   name="CLK.clk_reset/UART.reset"
+   kind="reset"
+   version="20.1"
+   start="CLK.clk_reset"
+   end="UART.reset">
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>CLK</startModule>
+  <startConnectionPoint>clk_reset</startConnectionPoint>
+  <endModule>UART</endModule>
+  <endConnectionPoint>reset</endConnectionPoint>
+ </connection>
+ <connection
    name="CLK.clk_reset/RAM.reset1"
    kind="reset"
    version="20.1"
@@ -16058,7 +16085,7 @@ parameters are a RESULT of the module parameters. -->
   <version>20.1</version>
  </plugin>
  <plugin>
-  <instanceCount>10</instanceCount>
+  <instanceCount>11</instanceCount>
   <name>conduit_end</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
@@ -16171,14 +16198,14 @@ parameters are a RESULT of the module parameters. -->
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>altera_avalon_jtag_uart</name>
+  <name>altera_avalon_uart</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>JTAG UART Intel FPGA IP</displayName>
+  <displayName>UART (RS-232 Serial Port) Intel FPGA IP</displayName>
   <version>20.1</version>
  </plugin>
  <plugin>
-  <instanceCount>17</instanceCount>
+  <instanceCount>16</instanceCount>
   <name>avalon</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IConnection</subtype>

@@ -13,7 +13,7 @@
    {
       datum _sortIndex
       {
-         value = "13";
+         value = "12";
          type = "int";
       }
    }
@@ -29,7 +29,7 @@
    {
       datum _sortIndex
       {
-         value = "11";
+         value = "10";
          type = "int";
       }
    }
@@ -45,7 +45,7 @@
    {
       datum _sortIndex
       {
-         value = "12";
+         value = "11";
          type = "int";
       }
    }
@@ -85,7 +85,7 @@
    {
       datum _sortIndex
       {
-         value = "14";
+         value = "13";
          type = "int";
       }
    }
@@ -117,7 +117,7 @@
    {
       datum _sortIndex
       {
-         value = "9";
+         value = "8";
          type = "int";
       }
    }
@@ -133,7 +133,7 @@
    {
       datum _sortIndex
       {
-         value = "10";
+         value = "9";
          type = "int";
       }
    }
@@ -149,7 +149,7 @@
    {
       datum _sortIndex
       {
-         value = "7";
+         value = "6";
          type = "int";
       }
    }
@@ -165,7 +165,7 @@
    {
       datum _sortIndex
       {
-         value = "8";
+         value = "7";
          type = "int";
       }
    }
@@ -181,7 +181,7 @@
    {
       datum _sortIndex
       {
-         value = "5";
+         value = "4";
          type = "int";
       }
    }
@@ -197,7 +197,7 @@
    {
       datum _sortIndex
       {
-         value = "6";
+         value = "5";
          type = "int";
       }
    }
@@ -213,7 +213,7 @@
    {
       datum _sortIndex
       {
-         value = "4";
+         value = "3";
          type = "int";
       }
    }
@@ -229,15 +229,15 @@
    {
       datum _sortIndex
       {
-         value = "3";
+         value = "14";
          type = "int";
       }
    }
-   element UART.avalon_jtag_slave
+   element UART.s1
    {
       datum baseAddress
       {
-         value = "20680";
+         value = "20640";
          type = "String";
       }
    }
@@ -314,6 +314,11 @@
    internal="SEG7_S1.external_connection"
    type="conduit"
    dir="end" />
+ <interface
+   name="uart"
+   internal="UART.external_connection"
+   type="conduit"
+   dir="end" />
  <module name="BT_INC" kind="altera_avalon_pio" version="20.1" enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="false" />
   <parameter name="bitModifyingOutReg" value="false" />
@@ -382,7 +387,7 @@
   <parameter name="dataAddrWidth" value="15" />
   <parameter name="dataMasterHighPerformanceAddrWidth" value="1" />
   <parameter name="dataMasterHighPerformanceMapParam" value="" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='RAM.s1' start='0x2000' end='0x3400' type='altera_avalon_onchip_memory2.s1' /><slave name='TIMER.s1' start='0x4000' end='0x4020' type='altera_avalon_timer.s1' /><slave name='CPU.debug_mem_slave' start='0x4800' end='0x5000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='SEG7_S0.s1' start='0x5000' end='0x5010' type='altera_avalon_pio.s1' /><slave name='SEG7_S1.s1' start='0x5010' end='0x5020' type='altera_avalon_pio.s1' /><slave name='SEG7_M0.s1' start='0x5020' end='0x5030' type='altera_avalon_pio.s1' /><slave name='SEG7_M1.s1' start='0x5030' end='0x5040' type='altera_avalon_pio.s1' /><slave name='SEG7_H0.s1' start='0x5040' end='0x5050' type='altera_avalon_pio.s1' /><slave name='SEG7_H1.s1' start='0x5050' end='0x5060' type='altera_avalon_pio.s1' /><slave name='BT_MODE.s1' start='0x5060' end='0x5070' type='altera_avalon_pio.s1' /><slave name='BT_SEL.s1' start='0x5070' end='0x5080' type='altera_avalon_pio.s1' /><slave name='BT_INC.s1' start='0x5080' end='0x5090' type='altera_avalon_pio.s1' /><slave name='LEDS.s1' start='0x5090' end='0x50A0' type='altera_avalon_pio.s1' /><slave name='UART.avalon_jtag_slave' start='0x50C8' end='0x50D0' type='altera_avalon_jtag_uart.avalon_jtag_slave' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='RAM.s1' start='0x2000' end='0x3400' type='altera_avalon_onchip_memory2.s1' /><slave name='TIMER.s1' start='0x4000' end='0x4020' type='altera_avalon_timer.s1' /><slave name='CPU.debug_mem_slave' start='0x4800' end='0x5000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='SEG7_S0.s1' start='0x5000' end='0x5010' type='altera_avalon_pio.s1' /><slave name='SEG7_S1.s1' start='0x5010' end='0x5020' type='altera_avalon_pio.s1' /><slave name='SEG7_M0.s1' start='0x5020' end='0x5030' type='altera_avalon_pio.s1' /><slave name='SEG7_M1.s1' start='0x5030' end='0x5040' type='altera_avalon_pio.s1' /><slave name='SEG7_H0.s1' start='0x5040' end='0x5050' type='altera_avalon_pio.s1' /><slave name='SEG7_H1.s1' start='0x5050' end='0x5060' type='altera_avalon_pio.s1' /><slave name='BT_MODE.s1' start='0x5060' end='0x5070' type='altera_avalon_pio.s1' /><slave name='BT_SEL.s1' start='0x5070' end='0x5080' type='altera_avalon_pio.s1' /><slave name='BT_INC.s1' start='0x5080' end='0x5090' type='altera_avalon_pio.s1' /><slave name='LEDS.s1' start='0x5090' end='0x50A0' type='altera_avalon_pio.s1' /><slave name='UART.s1' start='0x50A0' end='0x50C0' type='altera_avalon_uart.s1' /></address-map>]]></parameter>
   <parameter name="data_master_high_performance_paddr_base" value="0" />
   <parameter name="data_master_high_performance_paddr_size" value="0" />
   <parameter name="data_master_paddr_base" value="0" />
@@ -421,7 +426,7 @@
   <parameter name="icache_tagramBlockType" value="Automatic" />
   <parameter name="impl" value="Tiny" />
   <parameter name="instAddrWidth" value="15" />
-  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='RAM.s1' start='0x2000' end='0x3400' type='altera_avalon_onchip_memory2.s1' /><slave name='CPU.debug_mem_slave' start='0x4800' end='0x5000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='UART.avalon_jtag_slave' start='0x50C8' end='0x50D0' type='altera_avalon_jtag_uart.avalon_jtag_slave' /></address-map>]]></parameter>
+  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='RAM.s1' start='0x2000' end='0x3400' type='altera_avalon_onchip_memory2.s1' /><slave name='CPU.debug_mem_slave' start='0x4800' end='0x5000' type='altera_nios2_gen2.debug_mem_slave' /></address-map>]]></parameter>
   <parameter name="instructionMasterHighPerformanceAddrWidth" value="1" />
   <parameter name="instructionMasterHighPerformanceMapParam" value="" />
   <parameter name="instruction_master_high_performance_paddr_base" value="0" />
@@ -682,30 +687,22 @@
   <parameter name="timeoutPulseOutput" value="false" />
   <parameter name="watchdogPulse" value="2" />
  </module>
- <module name="UART" kind="altera_avalon_jtag_uart" version="20.1" enabled="1">
-  <parameter name="allowMultipleConnections" value="false" />
-  <parameter name="avalonSpec" value="2.0" />
-  <parameter name="clkFreq" value="50000000" />
-  <parameter name="hubInstanceID" value="0" />
-  <parameter name="readBufferDepth" value="64" />
-  <parameter name="readIRQThreshold" value="8" />
-  <parameter name="simInputCharacterStream" value="" />
-  <parameter name="simInteractiveOptions">NO_INTERACTIVE_WINDOWS</parameter>
-  <parameter name="useRegistersForReadBuffer" value="false" />
-  <parameter name="useRegistersForWriteBuffer" value="false" />
+ <module name="UART" kind="altera_avalon_uart" version="20.1" enabled="1">
+  <parameter name="baud" value="115200" />
+  <parameter name="clockRate" value="50000000" />
+  <parameter name="dataBits" value="8" />
+  <parameter name="fixedBaud" value="true" />
+  <parameter name="parity" value="NONE" />
+  <parameter name="simCharStream" value="" />
+  <parameter name="simInteractiveInputEnable" value="false" />
+  <parameter name="simInteractiveOutputEnable" value="false" />
+  <parameter name="simTrueBaud" value="false" />
+  <parameter name="stopBits" value="1" />
+  <parameter name="syncRegDepth" value="2" />
+  <parameter name="useCtsRts" value="false" />
+  <parameter name="useEopRegister" value="false" />
   <parameter name="useRelativePathForSimFile" value="false" />
-  <parameter name="writeBufferDepth" value="64" />
-  <parameter name="writeIRQThreshold" value="8" />
  </module>
- <connection
-   kind="avalon"
-   version="20.1"
-   start="CPU.data_master"
-   end="UART.avalon_jtag_slave">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x50c8" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
  <connection
    kind="avalon"
    version="20.1"
@@ -775,13 +772,9 @@
   <parameter name="baseAddress" value="0x5080" />
   <parameter name="defaultConnection" value="false" />
  </connection>
- <connection
-   kind="avalon"
-   version="20.1"
-   start="CPU.instruction_master"
-   end="UART.avalon_jtag_slave">
+ <connection kind="avalon" version="20.1" start="CPU.data_master" end="UART.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x50c8" />
+  <parameter name="baseAddress" value="0x50a0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -803,7 +796,6 @@
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection kind="clock" version="20.1" start="CLK.clk" end="CPU.clk" />
- <connection kind="clock" version="20.1" start="CLK.clk" end="UART.clk" />
  <connection kind="clock" version="20.1" start="CLK.clk" end="SEG7_S0.clk" />
  <connection kind="clock" version="20.1" start="CLK.clk" end="TIMER.clk" />
  <connection kind="clock" version="20.1" start="CLK.clk" end="SEG7_S1.clk" />
@@ -815,10 +807,8 @@
  <connection kind="clock" version="20.1" start="CLK.clk" end="BT_SEL.clk" />
  <connection kind="clock" version="20.1" start="CLK.clk" end="BT_INC.clk" />
  <connection kind="clock" version="20.1" start="CLK.clk" end="LEDS.clk" />
+ <connection kind="clock" version="20.1" start="CLK.clk" end="UART.clk" />
  <connection kind="clock" version="20.1" start="CLK.clk" end="RAM.clk1" />
- <connection kind="interrupt" version="20.1" start="CPU.irq" end="UART.irq">
-  <parameter name="irqNumber" value="0" />
- </connection>
  <connection kind="interrupt" version="20.1" start="CPU.irq" end="TIMER.irq">
   <parameter name="irqNumber" value="1" />
  </connection>
@@ -831,8 +821,10 @@
  <connection kind="interrupt" version="20.1" start="CPU.irq" end="BT_INC.irq">
   <parameter name="irqNumber" value="4" />
  </connection>
+ <connection kind="interrupt" version="20.1" start="CPU.irq" end="UART.irq">
+  <parameter name="irqNumber" value="0" />
+ </connection>
  <connection kind="reset" version="20.1" start="CLK.clk_reset" end="CPU.reset" />
- <connection kind="reset" version="20.1" start="CLK.clk_reset" end="UART.reset" />
  <connection kind="reset" version="20.1" start="CLK.clk_reset" end="SEG7_S0.reset" />
  <connection kind="reset" version="20.1" start="CLK.clk_reset" end="TIMER.reset" />
  <connection kind="reset" version="20.1" start="CLK.clk_reset" end="SEG7_S1.reset" />
@@ -844,6 +836,7 @@
  <connection kind="reset" version="20.1" start="CLK.clk_reset" end="BT_SEL.reset" />
  <connection kind="reset" version="20.1" start="CLK.clk_reset" end="BT_INC.reset" />
  <connection kind="reset" version="20.1" start="CLK.clk_reset" end="LEDS.reset" />
+ <connection kind="reset" version="20.1" start="CLK.clk_reset" end="UART.reset" />
  <connection kind="reset" version="20.1" start="CLK.clk_reset" end="RAM.reset1" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.enableEccProtection" value="FALSE" />
