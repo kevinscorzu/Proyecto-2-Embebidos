@@ -1,9 +1,9 @@
-17:48:05 **** Incremental Build of configuration Nios II for project alarm ****
+15:14:09 **** Incremental Build of configuration Nios II for project alarm ****
 wsl make all 
 Info: Building /mnt/c/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu/software/alarm_bsp/
 make --no-print-directory -C /mnt/c/Users/leahy/Documents/TEC/II-SEM-2021/SistemasEmbebidos/Proyecto-2-Embebidos/cpu/software/alarm_bsp/
 [BSP build complete]
 [alarm build complete]
 
-17:48:07 Build Finished (took 1s.466ms)
+15:14:10 Build Finished (took 1s.624ms)
 

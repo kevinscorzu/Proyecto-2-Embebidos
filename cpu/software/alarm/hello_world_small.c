@@ -78,7 +78,6 @@
  *
  */
 
-#include "sys/alt_stdio.h"
 #include "sys/alt_irq.h"
 #include "altera_avalon_pio_regs.h"
 #include "altera_avalon_timer_regs.h"
@@ -127,6 +126,7 @@ volatile unsigned char* uartMin1Ptr;
 volatile unsigned char* uartHour0Ptr;
 volatile unsigned char* uartHour1Ptr;
 volatile unsigned char* uartCounterPtr;
+volatile unsigned char* uartValuePtr;
 
 volatile unsigned char* segS0Ptr = (unsigned char *) 0x5000;
 volatile unsigned char* segS1Ptr = (unsigned char *) 0x5010;
@@ -168,6 +168,7 @@ int main() {
   uartHour0Ptr = ramPtr + 14;
   uartHour1Ptr = ramPtr + 15;
   uartCounterPtr = ramPtr + 16;
+  uartValuePtr = ramPtr + 17;
 
   *segS0Ptr = 0;
   *segS1Ptr = 0;
@@ -183,6 +184,8 @@ int main() {
   *uartHour0Ptr = 0;
   *uartHour1Ptr = 0;
   *uartCounterPtr = 0;
+
+  *uartValuePtr = 0;
 
   *modePtr = 0;
   
@@ -289,60 +292,52 @@ void handleAlarm() {
 
 void handleUart() {
 
-  int type = IORD_ALTERA_AVALON_UART_STATUS(UART);
+  *uartValuePtr = IORD_ALTERA_AVALON_UART_RXDATA(UART);
 
-  unsigned char value;
+  IOWR_ALTERA_AVALON_UART_STATUS(UART, 0);
 
-	if (type & ALTERA_AVALON_UART_STATUS_RRDY_MSK) {
+  IOWR_ALTERA_AVALON_UART_TXDATA(UART, *uartValuePtr);
+  
+  switch (*uartCounterPtr) {      
+    case 0:
+        *uartHour1Ptr = *uartValuePtr;
+      break;
+    case 1:
+        *uartHour0Ptr = *uartValuePtr;
+      break;
+    case 2:
+        *uartMin1Ptr = *uartValuePtr;
+      break;
+    case 3:
+        *uartMin0Ptr = *uartValuePtr;
+      break;
+    case 4:
+        *uartSeg1Ptr = *uartValuePtr;
+      break;
+    case 5:
+        *uartSeg0Ptr = *uartValuePtr;
+      break;
+  }
 
-    value = IORD_ALTERA_AVALON_UART_RXDATA(UART);
+  *uartCounterPtr += 1;
 
-    IOWR_ALTERA_AVALON_UART_STATUS(UART, 0);
+  if (*uartValuePtr == 'A') {
 
-    IOWR_ALTERA_AVALON_UART_TXDATA(UART, value); // Quitar linea mas adelante
+    *alarmHourPtr = ((*uartHour1Ptr - 48) * 10) + (*uartHour0Ptr - 48);
+    *alarmMinPtr = ((*uartMin1Ptr - 48) * 10) + (*uartMin0Ptr - 48);
+    *alarmSegPtr = ((*uartSeg1Ptr - 48) * 10) + (*uartSeg0Ptr - 48);
+
+    *uartCounterPtr = 0;
+
+  }
+  
+  if (*uartValuePtr == 'C') {
     
-    switch (*uartCounterPtr) {      
-      case 0:
-          *uartHour1Ptr = value;
-        break;
-      case 1:
-          *uartHour0Ptr = value;
-        break;
-      case 2:
-          *uartMin1Ptr = value;
-        break;
-      case 3:
-          *uartMin0Ptr = value;
-        break;
-      case 4:
-          *uartSeg1Ptr = value;
-        break;
-      case 5:
-          *uartSeg0Ptr = value;
-        break;
-    }
+    *hourPtr = ((*uartHour1Ptr - 48) * 10) + (*uartHour0Ptr - 48);
+    *minPtr = ((*uartMin1Ptr - 48) * 10) + (*uartMin0Ptr - 48);
+    *segPtr = ((*uartSeg1Ptr - 48) * 10) + (*uartSeg0Ptr - 48);
 
-    *uartCounterPtr += 1;
-
-    if (value == 'A') {
-
-      *alarmHourPtr = ((*uartHour1Ptr - 48) * 10) + (*uartHour0Ptr - 48);
-      *alarmMinPtr = ((*uartMin1Ptr - 48) * 10) + (*uartMin0Ptr - 48);
-      *alarmSegPtr = ((*uartSeg1Ptr - 48) * 10) + (*uartSeg0Ptr - 48);
-
-      *uartCounterPtr = 0;
-
-    }
-    
-    if (value == 'C') {
-      
-      *hourPtr = ((*uartHour1Ptr - 48) * 10) + (*uartHour0Ptr - 48);
-      *minPtr = ((*uartMin1Ptr - 48) * 10) + (*uartMin0Ptr - 48);
-      *segPtr = ((*uartSeg1Ptr - 48) * 10) + (*uartSeg0Ptr - 48);
-
-      *uartCounterPtr = 0;
-
-    }
+    *uartCounterPtr = 0;
 
   }
 
